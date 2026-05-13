@@ -36,6 +36,9 @@ export const createSalesRouter = (dependencies: SalesModuleDependencies) => {
   router.get('/shipments', requirePermission(dependencies.db, 'SALES', 'READ'), controller.listSalesShipments);
   router.post('/orders/:salesOrderId/shipments', requirePermission(dependencies.db, 'SALES', 'CREATE'), controller.createSalesShipment);
   router.get('/shipments/:shipmentId', requirePermission(dependencies.db, 'SALES', 'READ'), controller.getSalesShipmentById);
+  router.post('/shipments/:shipmentId/allocate', requirePermission(dependencies.db, 'SALES', 'UPDATE'), controller.allocateSalesShipment);
+  router.post('/shipments/:shipmentId/pack', requirePermission(dependencies.db, 'SALES', 'UPDATE'), controller.packSalesShipment);
+  router.post('/shipments/:shipmentId/dispatch', requirePermission(dependencies.db, 'SALES', 'UPDATE'), controller.dispatchSalesShipment);
   router.post('/shipments/:shipmentId/post', requirePermission(dependencies.db, 'SALES', 'UPDATE'), controller.postSalesShipment);
   router.post('/shipments/:shipmentId/cancel', requirePermission(dependencies.db, 'SALES', 'UPDATE'), controller.cancelSalesShipment);
 

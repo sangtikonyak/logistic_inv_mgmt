@@ -89,6 +89,13 @@ async function upgradeOrderSchemas() {
   await ensureColumnExists('purchase_orders', 'payment_status', `VARCHAR(40) NOT NULL DEFAULT 'NOT_APPLICABLE'`);
   await ensureColumnExists('purchase_orders', 'payment_mode', `VARCHAR(40) NOT NULL DEFAULT 'NOT_APPLICABLE'`);
 
+  // Expand Sales Shipments for WMS Execution Workflows
+  await pool.query(`
+    ALTER TABLE sales_shipments
+    MODIFY COLUMN status ENUM('DRAFT', 'ALLOCATED', 'PICKING', 'PACKED', 'READY', 'DISPATCHED', 'POSTED', 'CANCELLED')
+    NOT NULL DEFAULT 'DRAFT'
+  `);
+
   // Phase 1: Procurement Approval & Cost Layering
   await pool.query(`
     ALTER TABLE purchase_orders 
@@ -225,6 +232,30 @@ async function upgradeAuthSchemas() {
   `);
 }
 
+async function optimizeIndexes() {
+  console.log('Optimizing performance indexes...');
+  
+  // 1. Warehouse Picklists
+  await ensureIndexExists('warehouse_picklists', 'idx_warehouse_picklists_tenant_assigned', '(tenant_id, assigned_to)');
+  await ensureIndexExists('warehouse_picklists', 'idx_warehouse_picklists_tenant_warehouse_status', '(tenant_id, warehouse_id, status)');
+
+  // 2. Warehouse Putaway Tasks
+  await ensureIndexExists('warehouse_putaway_tasks', 'idx_warehouse_putaway_tenant_assigned', '(tenant_id, assigned_to)');
+  await ensureIndexExists('warehouse_putaway_tasks', 'idx_warehouse_putaway_tenant_warehouse_status', '(tenant_id, warehouse_id, status)');
+
+  // 3. Inventory Movements
+  await ensureIndexExists('inventory_movements', 'idx_inventory_movements_tenant_type_date', '(tenant_id, movement_type, created_at DESC)');
+
+  // 4. User Activities
+  await ensureIndexExists('user_activities', 'idx_user_activities_tenant_module_type', '(tenant_id, module, action_type, created_at DESC)');
+
+  // 5. Sales Shipment Items
+  await ensureIndexExists('sales_shipment_items', 'idx_sales_shipment_items_tenant_product', '(tenant_id, product_id, product_variant_id)');
+
+  // 6. Warehouse Bins
+  await ensureIndexExists('warehouse_bins', 'idx_warehouse_bins_tenant_warehouse_code', '(tenant_id, warehouse_id, code)');
+}
+
 async function runSetup() {
   console.log('Starting Database Schema Setup...');
 
@@ -243,14 +274,14 @@ async function runSetup() {
       'warehouse_zones.sql',
       'warehouse_bins.sql',
       'suppliers.sql',
+      'inventory_containers.sql',
       'purchase_orders.sql',
       'purchase_order_items.sql',
       'purchase_receipts.sql',
+      'inventory_lots.sql',
       'purchase_receipt_items.sql',
       'purchase_returns.sql',
       'purchase_return_items.sql',
-      'inventory_containers.sql',
-      'inventory_lots.sql',
       'inventory_container_items.sql',
       'inventory_cost_layers.sql',
       'inventory_layer_consumptions.sql',
@@ -267,9 +298,12 @@ async function runSetup() {
       'procurement_requisition_items.sql',
       'inventory_stocks.sql',
       'inventory_movements.sql',
+      'inventory_counts.sql',
       'demand_snapshots.sql',
       'warehouse_transfers.sql',
       'warehouse_transfer_items.sql',
+      'warehouse_picklists.sql',
+      'warehouse_putaway_tasks.sql',
       'product_attributes.sql',
       'product_attribute_values.sql',
       'product_variant_attribute_values.sql',
@@ -293,10 +327,13 @@ async function runSetup() {
     await upgradeProductSchemas();
     await upgradeInventorySchemas();
 
+    await optimizeIndexes();
+
     console.log('🎉 All tables created successfully!');
     process.exit(0);
   } catch (error) {
     console.error('Database setup failed. Ending process.');
+    console.error(error);
     process.exit(1);
   }
 }

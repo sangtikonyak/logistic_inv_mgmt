@@ -21,6 +21,7 @@ import { WarehouseModuleLayout } from '../features/warehouses/components/Warehou
 import { WarehouseListPage } from '../features/warehouses/pages/WarehouseListPage.jsx'
 import { WarehouseFormPage } from '../features/warehouses/pages/WarehouseFormPage.jsx'
 import { WarehouseDetailPage } from '../features/warehouses/pages/WarehouseDetailPage.jsx'
+import { PicklistListPage } from '../features/warehouses/pages/PicklistListPage.jsx'
 import { InventoryModuleLayout } from '../features/inventory/components/InventoryModuleLayout.jsx'
 import { StockListingPage } from '../features/inventory/pages/StockListingPage.jsx'
 import { StockDetailPage } from '../features/inventory/pages/StockDetailPage.jsx'
@@ -31,6 +32,7 @@ import { TransferFormPage } from '../features/inventory/pages/TransferFormPage.j
 import { TransferDetailPage } from '../features/inventory/pages/TransferDetailPage.jsx'
 import { LotExpiryPage } from '../features/inventory/pages/LotExpiryPage.jsx'
 import { ContainerTracePage } from '../features/inventory/pages/ContainerTracePage.jsx'
+import { CountPlanListPage } from '../features/inventory/pages/CountPlanListPage.jsx'
 import { PurchaseModuleLayout } from '../features/purchase/components/PurchaseModuleLayout.jsx'
 import { SupplierListPage } from '../features/purchase/pages/SupplierListPage.jsx'
 import { SupplierFormPage } from '../features/purchase/pages/SupplierFormPage.jsx'
@@ -142,6 +144,7 @@ export function AppRouter() {
             <Route path="warehouses" element={<WarehouseModuleLayout />}>
               <Route index element={<Navigate to="/app/warehouses/list" replace />} />
               <Route path="list" element={<WarehouseListPage />} />
+              <Route path="picklists" element={<PicklistListPage />} />
               <Route path="new" element={<WarehouseFormPage />} />
               <Route path=":warehouseId" element={<WarehouseDetailPage />} />
               <Route path=":warehouseId/edit" element={<WarehouseFormPage />} />
@@ -149,6 +152,7 @@ export function AppRouter() {
             <Route path="inventory" element={<InventoryModuleLayout />}>
               <Route index element={<Navigate to="/app/inventory/stock" replace />} />
               <Route path="stock" element={<StockListingPage />} />
+              <Route path="counts" element={<CountPlanListPage />} />
               <Route path="stock/:itemId" element={<StockDetailPage />} />
               <Route path="alerts" element={<LowStockAlertsPage />} />
               <Route path="movements" element={<MovementsPage />} />

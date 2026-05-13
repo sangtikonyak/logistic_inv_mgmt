@@ -71,3 +71,35 @@ export function cancelTransfer(transferId) {
   })
 }
 
+// ------ CYCLE COUNTING ------
+
+export function listCountPlans(filters) {
+  return httpRequest(`/inventory/counts/plans${toQueryString(filters)}`)
+}
+
+export function createCountPlan(payload) {
+  return httpRequest('/inventory/counts/plans', {
+    method: 'POST',
+    body: JSON.stringify(payload),
+  })
+}
+
+export function startCountTask(taskId) {
+  return httpRequest(`/inventory/counts/tasks/${taskId}/start`, {
+    method: 'POST',
+  })
+}
+
+export function confirmCountItem(taskId, itemId, payload) {
+  return httpRequest(`/inventory/counts/tasks/${taskId}/items/${itemId}/confirm`, {
+    method: 'POST',
+    body: JSON.stringify(payload),
+  })
+}
+
+export function reconcileCountTask(taskId) {
+  return httpRequest(`/inventory/counts/tasks/${taskId}/reconcile`, {
+    method: 'POST',
+  })
+}
+

@@ -4,6 +4,7 @@ import { listWarehouses } from '../../warehouses/api/warehousesApi.js'
 
 const inventoryNavItems = [
   { label: 'Stock Overview', to: '/app/inventory/stock' },
+  { label: 'Cycle Counting', to: '/app/inventory/counts' },
   { label: 'Stock Alerts', to: '/app/inventory/alerts' },
   { label: 'Movements Ledger', to: '/app/inventory/movements' },
   { label: 'Lot Expiry', to: '/app/inventory/lots' },

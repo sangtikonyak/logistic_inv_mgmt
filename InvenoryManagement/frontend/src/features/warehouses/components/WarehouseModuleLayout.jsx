@@ -2,6 +2,7 @@ import { NavLink, Outlet } from 'react-router-dom'
 
 const warehouseNavItems = [
   { label: 'All Warehouses', to: '/app/warehouses/list' },
+  { label: 'Picklists', to: '/app/warehouses/picklists' },
   { label: 'Add Warehouse', to: '/app/warehouses/new' },
 ]
 

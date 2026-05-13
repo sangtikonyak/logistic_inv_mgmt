@@ -259,3 +259,40 @@ export const transferIdParamSchema = z.object({
     transferId: uuidSchema,
   }),
 });
+
+// WMS Execution Schemas
+export const picklistIdParamSchema = z.object({
+  params: z.object({
+    picklistId: uuidSchema,
+  }),
+});
+
+export const assignPicklistSchema = z.object({
+  params: z.object({
+    picklistId: uuidSchema,
+  }),
+  body: z.object({
+    userId: uuidSchema,
+  }),
+});
+
+export const confirmPickItemSchema = z.object({
+  params: z.object({
+    picklistId: uuidSchema,
+    itemId: uuidSchema,
+  }),
+  body: z.object({
+    quantityPicked: z.coerce.number().min(0),
+    binId: uuidSchema.optional(), // Workers might pick from a different bin than suggested
+  }),
+});
+
+export const listPicklistsSchema = z.object({
+  query: z.object({
+    status: z.enum(['DRAFT', 'ASSIGNED', 'PICKING', 'COMPLETED', 'CANCELLED']).optional(),
+    assignedTo: uuidSchema.optional(),
+    warehouseId: uuidSchema.optional(),
+    page: z.coerce.number().int().min(1).default(1),
+    limit: z.coerce.number().int().min(1).max(100).default(20),
+  }),
+});

@@ -6,6 +6,7 @@ import { InventoryRepository } from '../../inventory/repositories/inventory.repo
 import { WarehouseRepository } from '../../warehouse/repositories/warehouse.repository';
 import { ActivityService } from '../../activity/services/activity.service';
 import { PurchaseRepository } from '../repositories/purchase.repository';
+import { eventBus, WMS_EVENTS } from '../../../common/utils/event-bus';
 import {
   PurchaseOrder,
   PurchaseOrderCreateInput,
@@ -742,6 +743,12 @@ export class PurchaseService {
         },
         transaction
       );
+    });
+
+    eventBus.dispatch(WMS_EVENTS.GOODS_RECEIVED, {
+      tenantId,
+      receiptId,
+      actorUserId
     });
 
     return this.getPurchaseReceiptById(tenantId, receiptId);

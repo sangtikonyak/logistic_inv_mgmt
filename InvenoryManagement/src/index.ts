@@ -18,11 +18,24 @@ import { createProcurementRouter } from './modules/procurement/routes/procuremen
 import { setupLogisticsRoutes } from './modules/logistics/routes/logistics.routes';
 import { setupFinanceRoutes } from './modules/finance/routes/finance.routes';
 import { ActivityService } from './modules/activity/services/activity.service';
+import { WarehouseRepository } from './modules/warehouse/repositories/warehouse.repository';
+import { PurchaseRepository } from './modules/purchase/repositories/purchase.repository';
+import { SalesRepository } from './modules/sales/repositories/sales.repository';
+import { WmsExecutionService } from './modules/warehouse/services/wms-execution.service';
+import { WmsSubscriber } from './modules/warehouse/subscribers/wms.subscriber';
 
 const app = express();
 const PORT = env.PORT;
 
 const activityService = new ActivityService(db);
+
+// Initialize WMS Infrastructure
+const warehouseRepo = new WarehouseRepository(db);
+const salesRepo = new SalesRepository(db);
+const purchaseRepo = new PurchaseRepository(db);
+const wmsService = new WmsExecutionService(warehouseRepo, salesRepo, purchaseRepo, unitOfWork);
+const wmsSubscriber = new WmsSubscriber(wmsService, unitOfWork);
+wmsSubscriber.init();
 
 const allowedOrigins = new Set(
   [

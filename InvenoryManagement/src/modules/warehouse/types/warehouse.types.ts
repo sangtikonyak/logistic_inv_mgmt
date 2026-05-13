@@ -267,3 +267,76 @@ export interface InventoryMovementListRow extends InventoryMovement {
   product_type: string | null;
   sku: string | null;
 }
+
+// WMS Execution Types
+export type PicklistStatus = 'DRAFT' | 'ASSIGNED' | 'PICKING' | 'COMPLETED' | 'CANCELLED';
+export type PicklistItemStatus = 'PENDING' | 'PARTIAL' | 'COMPLETED' | 'SKIPPED';
+
+export interface WarehousePicklist {
+  id: string;
+  tenant_id: string;
+  warehouse_id: string;
+  picklist_number: string;
+  status: PicklistStatus;
+  assigned_to: string | null;
+  notes: string | null;
+  created_by: string | null;
+  updated_by: string | null;
+  created_at: Date;
+  updated_at: Date;
+}
+
+export interface WarehousePicklistItem {
+  id: string;
+  tenant_id: string;
+  picklist_id: string;
+  reference_type: 'SALES_SHIPMENT' | 'WAREHOUSE_TRANSFER';
+  reference_id: string;
+  reference_item_id: string;
+  product_id: string;
+  product_variant_id: string | null;
+  zone_id: string | null;
+  bin_id: string | null;
+  quantity_requested: string;
+  quantity_picked: string;
+  status: PicklistItemStatus;
+  created_at: Date;
+  updated_at: Date;
+}
+
+export type PutawayStatus = 'PENDING' | 'ASSIGNED' | 'IN_PROGRESS' | 'COMPLETED' | 'CANCELLED';
+export type PutawayItemStatus = 'PENDING' | 'PARTIAL' | 'COMPLETED' | 'SKIPPED';
+
+export interface WarehousePutawayTask {
+  id: string;
+  tenant_id: string;
+  warehouse_id: string;
+  task_number: string;
+  reference_type: 'PURCHASE_RECEIPT' | 'SALES_RETURN' | 'WAREHOUSE_TRANSFER';
+  reference_id: string;
+  status: PutawayStatus;
+  assigned_to: string | null;
+  notes: string | null;
+  created_by: string | null;
+  updated_by: string | null;
+  created_at: Date;
+  updated_at: Date;
+}
+
+export interface WarehousePutawayTaskItem {
+  id: string;
+  tenant_id: string;
+  task_id: string;
+  reference_item_id: string;
+  product_id: string;
+  product_variant_id: string | null;
+  source_zone_id: string | null;
+  source_bin_id: string | null;
+  target_zone_id: string | null;
+  target_bin_id: string | null;
+  quantity_expected: string;
+  quantity_putaway: string;
+  status: PutawayItemStatus;
+  created_at: Date;
+  updated_at: Date;
+}

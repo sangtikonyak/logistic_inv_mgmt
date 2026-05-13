@@ -5,6 +5,7 @@ import { UnitOfWork } from '../../../database/unit-of-work';
 import { InventoryRepository } from '../../inventory/repositories/inventory.repository';
 import { WarehouseRepository } from '../../warehouse/repositories/warehouse.repository';
 import { SalesRepository } from '../repositories/sales.repository';
+import { eventBus, WMS_EVENTS } from '../../../common/utils/event-bus';
 import {
   Customer,
   SalesOrder,
@@ -36,6 +37,99 @@ export class SalesService {
     this.salesRepository = new SalesRepository(db);
     this.warehouseRepository = new WarehouseRepository(db);
     this.inventoryRepository = new InventoryRepository(db);
+  }
+
+  /**
+   * Enterprise WMS Workflow: Allocate Sales Shipment
+   * Moves shipment to ALLOCATED state and triggers WMS Picklist generation.
+   */
+  async allocateSalesShipment(tenantId: string, actorUserId: string, shipmentId: string) {
+    await this.unitOfWork.execute(async (transaction) => {
+      const shipment = await this.salesRepository.findSalesShipmentByIdForUpdate(tenantId, shipmentId, transaction);
+      if (!shipment) throw new AppError('Sales shipment not found.', 404);
+      if (shipment.status !== 'DRAFT') throw new AppError('Only DRAFT shipments can be allocated.', 409);
+
+      // Verify items and stock availability
+      const shipmentItems = await this.salesRepository.listSalesShipmentItems(tenantId, shipmentId, transaction);
+      if (shipmentItems.length === 0) throw new AppError('Shipment has no items.', 400);
+
+      // Transition to ALLOCATED
+      await this.salesRepository.updateSalesShipmentStatus(
+        tenantId,
+        shipmentId,
+        { status: 'ALLOCATED', updatedBy: actorUserId },
+        transaction
+      );
+
+      await this.activityService.logActivity({
+        tenantId,
+        userId: actorUserId,
+        actionType: 'UPDATE',
+        module: 'SALES',
+        description: `Sales shipment ${shipment.shipment_number} allocated for WMS picking.`,
+      });
+    });
+
+    // Dispatch event AFTER commit for async WMS execution
+    eventBus.dispatch(WMS_EVENTS.SHIPMENT_ALLOCATED, {
+      tenantId,
+      shipmentId,
+      actorUserId
+    });
+
+    return this.getSalesShipmentById(tenantId, shipmentId);
+  }
+
+  async packSalesShipment(tenantId: string, actorUserId: string, shipmentId: string) {
+    await this.unitOfWork.execute(async (transaction) => {
+      const shipment = await this.salesRepository.findSalesShipmentByIdForUpdate(tenantId, shipmentId, transaction);
+      if (!shipment) throw new AppError('Sales shipment not found.', 404);
+      if (shipment.status !== 'PICKED') throw new AppError('Only PICKED shipments can be packed.', 409);
+
+      await this.salesRepository.updateSalesShipmentStatus(
+        tenantId,
+        shipmentId,
+        { status: 'PACKED', updatedBy: actorUserId },
+        transaction
+      );
+
+      await this.activityService.logActivity({
+        tenantId,
+        userId: actorUserId,
+        actionType: 'UPDATE',
+        module: 'SALES',
+        description: `Sales shipment ${shipment.shipment_number} packed and ready for dispatch.`,
+      });
+    });
+
+    return this.getSalesShipmentById(tenantId, shipmentId);
+  }
+
+  async dispatchSalesShipment(tenantId: string, actorUserId: string, shipmentId: string, input?: { carrierId?: string, trackingNumber?: string }) {
+    await this.unitOfWork.execute(async (transaction) => {
+      const shipment = await this.salesRepository.findSalesShipmentByIdForUpdate(tenantId, shipmentId, transaction);
+      if (!shipment) throw new AppError('Sales shipment not found.', 404);
+      if (shipment.status !== 'PACKED' && shipment.status !== 'READY') {
+        throw new AppError('Only PACKED or READY shipments can be dispatched.', 409);
+      }
+
+      await this.salesRepository.updateSalesShipmentStatus(
+        tenantId,
+        shipmentId,
+        { status: 'DISPATCHED', updatedBy: actorUserId },
+        transaction
+      );
+
+      await this.activityService.logActivity({
+        tenantId,
+        userId: actorUserId,
+        actionType: 'UPDATE',
+        module: 'SALES',
+        description: `Sales shipment ${shipment.shipment_number} dispatched to carrier.`,
+      });
+    });
+
+    return this.getSalesShipmentById(tenantId, shipmentId);
   }
 
   async createSalesOrder(tenantId: string, actorUserId: string, input: SalesOrderCreateInput) {
@@ -817,6 +911,9 @@ export class SalesService {
       }
       if (shipment.status === 'CANCELLED') {
         throw new AppError('Cancelled shipment cannot be posted.', 409);
+      }
+      if (shipment.status !== 'DISPATCHED') {
+        throw new AppError('Shipment must be DISPATCHED before posting (financial stock deduction).', 409);
       }
 
       const order = await this.salesRepository.findSalesOrderByIdForUpdate(tenantId, shipment.sales_order_id, transaction);

@@ -5,14 +5,15 @@ import { listShipments } from '../api/salesApi.js'
 
 function statusBadge(status) {
   switch (status) {
-    case 'DRAFT':
-      return 'bg-[#F3F4F6] text-[#374151]'
-    case 'POSTED':
-      return 'bg-[#DCFCE7] text-[#15803D]'
-    case 'CANCELLED':
-      return 'bg-[#FEE2E2] text-[#B91C1C]'
-    default:
-      return 'bg-[#F3F4F6] text-[#374151]'
+    case 'DRAFT':      return 'bg-[#F3F4F6] text-[#374151]'
+    case 'ALLOCATED':  return 'bg-[#DBEAFE] text-[#1E40AF]'
+    case 'PICKING':    return 'bg-[#FEF3C7] text-[#92400E]'
+    case 'PICKED':     return 'bg-[#D1FAE5] text-[#065F46]'
+    case 'PACKED':     return 'bg-[#E0E7FF] text-[#3730A3]'
+    case 'DISPATCHED': return 'bg-[#FDF2F8] text-[#9D174D]'
+    case 'POSTED':     return 'bg-[#DCFCE7] text-[#15803D]'
+    case 'CANCELLED':  return 'bg-[#FEE2E2] text-[#B91C1C]'
+    default:           return 'bg-[#F3F4F6] text-[#374151]'
   }
 }
 

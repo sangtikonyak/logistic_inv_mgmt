@@ -95,3 +95,39 @@ export function deleteBin(binId) {
     method: 'DELETE',
   })
 }
+
+// ------ WMS PICKLISTS ------
+
+export function listPicklists(filters) {
+  return httpRequest(`/warehouses/picklists${toQueryString(filters)}`)
+}
+
+export function getPicklist(picklistId) {
+  return httpRequest(`/warehouses/picklists/${picklistId}`)
+}
+
+export function assignPicklist(picklistId, userId) {
+  return httpRequest(`/warehouses/picklists/${picklistId}/assign`, {
+    method: 'POST',
+    body: JSON.stringify({ userId }),
+  })
+}
+
+export function startPicking(picklistId) {
+  return httpRequest(`/warehouses/picklists/${picklistId}/start`, {
+    method: 'POST',
+  })
+}
+
+export function confirmPickItem(picklistId, itemId, payload) {
+  return httpRequest(`/warehouses/picklists/${picklistId}/items/${itemId}/confirm`, {
+    method: 'POST',
+    body: JSON.stringify(payload),
+  })
+}
+
+export function completePicklist(picklistId) {
+  return httpRequest(`/warehouses/picklists/${picklistId}/complete`, {
+    method: 'POST',
+  })
+}

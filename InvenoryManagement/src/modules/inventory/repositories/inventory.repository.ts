@@ -73,6 +73,16 @@ export class InventoryRepository {
     return Number((rows[0] as { total: number } | undefined)?.total ?? 0);
   }
 
+  async listStockByBin(tenantId: string, binId: string): Promise<InventoryStockRow[]> {
+    const sql = `
+      SELECT *
+      FROM inventory_stocks
+      WHERE tenant_id = ? AND bin_id = ?
+    `;
+    const [rows] = await this.executor.execute<mysql.RowDataPacket[]>(sql, [tenantId, binId]);
+    return rows as InventoryStockRow[];
+  }
+
   async listMovements(
     tenantId: string,
     warehouseId: string,

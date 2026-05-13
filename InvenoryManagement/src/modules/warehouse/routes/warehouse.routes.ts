@@ -3,6 +3,11 @@ import { authMiddleware } from '../../../common/middlewares/auth.middleware';
 import { requirePermission } from '../../../common/middlewares/rbac.middleware';
 import { tenantMiddleware } from '../../../common/middlewares/tenant.middleware';
 import { WarehouseController } from '../controllers/warehouse.controller';
+import { WmsExecutionController } from '../controllers/wms-execution.controller';
+import { WarehouseRepository } from '../repositories/warehouse.repository';
+import { PurchaseRepository } from '../../purchase/repositories/purchase.repository';
+import { SalesRepository } from '../../sales/repositories/sales.repository';
+import { WmsExecutionService } from '../services/wms-execution.service';
 import { WarehouseModuleDependencies } from '../warehouse.module';
 
 export const createWarehouseRouter = (dependencies: WarehouseModuleDependencies) => {
@@ -10,6 +15,21 @@ export const createWarehouseRouter = (dependencies: WarehouseModuleDependencies)
   const controller = new WarehouseController(dependencies);
 
   router.use(authMiddleware, tenantMiddleware);
+
+  // Initialize WMS Execution
+  const warehouseRepo = new WarehouseRepository(dependencies.db);
+  const salesRepo = new SalesRepository(dependencies.db);
+  const purchaseRepo = new PurchaseRepository(dependencies.db);
+  const wmsService = new WmsExecutionService(warehouseRepo, salesRepo, purchaseRepo, dependencies.unitOfWork);
+  const wmsController = new WmsExecutionController(wmsService);
+
+  // WMS Execution Routes
+  router.get('/picklists', requirePermission(dependencies.db, 'WAREHOUSES', 'READ'), wmsController.listPicklists);
+  router.get('/picklists/:picklistId', requirePermission(dependencies.db, 'WAREHOUSES', 'READ'), wmsController.getPicklistById);
+  router.post('/picklists/:picklistId/assign', requirePermission(dependencies.db, 'WAREHOUSES', 'UPDATE'), wmsController.assignPicklist);
+  router.post('/picklists/:picklistId/start', requirePermission(dependencies.db, 'WAREHOUSES', 'UPDATE'), wmsController.startPicking);
+  router.post('/picklists/:picklistId/items/:itemId/confirm', requirePermission(dependencies.db, 'WAREHOUSES', 'UPDATE'), wmsController.confirmPickItem);
+  router.post('/picklists/:picklistId/complete', requirePermission(dependencies.db, 'WAREHOUSES', 'UPDATE'), wmsController.completePicklist);
 
   router.get('/', requirePermission(dependencies.db, 'WAREHOUSES', 'READ'), controller.listWarehouses);
   router.post('/', requirePermission(dependencies.db, 'WAREHOUSES', 'CREATE'), controller.createWarehouse);

@@ -10,7 +10,7 @@ export type SalesOrderStatus =
   | 'SHIPPED'
   | 'CANCELLED';
 export type SalesReservationStatus = 'DRAFT' | 'POSTED' | 'RELEASED' | 'CANCELLED';
-export type SalesShipmentStatus = 'DRAFT' | 'POSTED' | 'CANCELLED';
+export type SalesShipmentStatus = 'DRAFT' | 'ALLOCATED' | 'PICKING' | 'PICKED' | 'PACKED' | 'READY' | 'DISPATCHED' | 'POSTED' | 'CANCELLED';
 
 export interface Customer {
   id: string;

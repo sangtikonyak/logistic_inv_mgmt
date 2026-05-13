@@ -4,14 +4,26 @@ import { Link, useParams } from 'react-router-dom'
 import { useAuth } from '../../../app/providers/AuthProvider.jsx'
 import { usePermissions } from '../../../shared/lib/permissions.js'
 import { StatusAlert } from '../../../shared/ui/StatusAlert.jsx'
-import { getShipment, postShipment, cancelShipment } from '../api/salesApi.js'
+import { 
+  getShipment, 
+  postShipment, 
+  cancelShipment,
+  allocateShipment,
+  packShipment,
+  dispatchShipment 
+} from '../api/salesApi.js'
 
 function statusBadge(status) {
   switch (status) {
-    case 'DRAFT':     return 'bg-[#F3F4F6] text-[#374151]'
-    case 'POSTED':    return 'bg-[#DCFCE7] text-[#15803D]'
-    case 'CANCELLED': return 'bg-[#FEE2E2] text-[#B91C1C]'
-    default:          return 'bg-[#F3F4F6] text-[#374151]'
+    case 'DRAFT':      return 'bg-[#F3F4F6] text-[#374151]'
+    case 'ALLOCATED':  return 'bg-[#DBEAFE] text-[#1E40AF]'
+    case 'PICKING':    return 'bg-[#FEF3C7] text-[#92400E]'
+    case 'PICKED':     return 'bg-[#D1FAE5] text-[#065F46]'
+    case 'PACKED':     return 'bg-[#E0E7FF] text-[#3730A3]'
+    case 'DISPATCHED': return 'bg-[#FDF2F8] text-[#9D174D]'
+    case 'POSTED':     return 'bg-[#DCFCE7] text-[#15803D]'
+    case 'CANCELLED':  return 'bg-[#FEE2E2] text-[#B91C1C]'
+    default:           return 'bg-[#F3F4F6] text-[#374151]'
   }
 }
 
@@ -74,21 +86,42 @@ export function ShipmentDetailPage() {
         </div>
 
         <div className="flex flex-wrap gap-2">
-          {canEdit && isDraft && (
-            <>
-              <button onClick={() => act(postShipment, 'Post this shipment? Inventory will be decremented.')}
-                disabled={isProcessing}
-                className="rounded-lg bg-[#22C55E] px-4 py-2 text-sm font-semibold text-white hover:bg-[#16A34A] disabled:opacity-60 transition">
-                Post Shipment
-              </button>
-              <button onClick={() => act(cancelShipment, 'Cancel this shipment?')}
-                disabled={isProcessing}
-                className="rounded-lg bg-[#EF4444] px-4 py-2 text-sm font-semibold text-white hover:bg-[#DC2626] disabled:opacity-60 transition">
-                Cancel
-              </button>
-            </>
+          {canEdit && status === 'DRAFT' && (
+            <button onClick={() => act(allocateShipment, 'Allocate this shipment for picking?')}
+              disabled={isProcessing}
+              className="rounded-lg bg-[#3B82F6] px-4 py-2 text-sm font-semibold text-white hover:bg-[#2563EB] disabled:opacity-60 transition">
+              Allocate for Picking
+            </button>
           )}
-          {canEdit && shipment.status === 'POSTED' && (
+          {canEdit && status === 'PICKED' && (
+            <button onClick={() => act(packShipment, 'Mark this shipment as packed?')}
+              disabled={isProcessing}
+              className="rounded-lg bg-[#6366F1] px-4 py-2 text-sm font-semibold text-white hover:bg-[#4F46E5] disabled:opacity-60 transition">
+              Mark as Packed
+            </button>
+          )}
+          {canEdit && status === 'PACKED' && (
+            <button onClick={() => act(dispatchShipment, 'Dispatch this shipment to carrier?')}
+              disabled={isProcessing}
+              className="rounded-lg bg-[#EC4899] px-4 py-2 text-sm font-semibold text-white hover:bg-[#DB2777] disabled:opacity-60 transition">
+              Dispatch Carrier
+            </button>
+          )}
+          {canEdit && status === 'DISPATCHED' && (
+            <button onClick={() => act(postShipment, 'Finalize financial posting for this shipment? Inventory will be decremented.')}
+              disabled={isProcessing}
+              className="rounded-lg bg-[#22C55E] px-4 py-2 text-sm font-semibold text-white hover:bg-[#16A34A] disabled:opacity-60 transition">
+              Post Shipment
+            </button>
+          )}
+          {canEdit && status !== 'POSTED' && status !== 'CANCELLED' && (
+            <button onClick={() => act(cancelShipment, 'Cancel this shipment?')}
+              disabled={isProcessing}
+              className="rounded-lg bg-[#EF4444] px-4 py-2 text-sm font-semibold text-white hover:bg-[#DC2626] disabled:opacity-60 transition">
+              Cancel
+            </button>
+          )}
+          {canEdit && status === 'POSTED' && (
             <Link to={`/app/returns/shipments/${shipmentId}/return`}
               className="rounded-lg border-2 border-[#F59E0B] bg-white px-4 py-2 text-sm font-semibold text-[#F59E0B] hover:bg-[#FEF3C7] transition">
               Create Return

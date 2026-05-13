@@ -224,6 +224,50 @@ export class SalesController {
     }
   };
 
+  allocateSalesShipment = async (req: Request, res: Response, next: NextFunction) => {
+    try {
+      const validated = shipmentIdParamSchema.parse(req);
+      const result = await this.salesService.allocateSalesShipment(
+        req.user!.tenantId,
+        req.user!.userId,
+        validated.params.shipmentId
+      );
+      res.status(200).json(ApiResponse.success(result, 'Sales shipment allocated for WMS picking.'));
+    } catch (error) {
+      next(error);
+    }
+  };
+
+  packSalesShipment = async (req: Request, res: Response, next: NextFunction) => {
+    try {
+      const validated = shipmentIdParamSchema.parse(req);
+      const result = await this.salesService.packSalesShipment(
+        req.user!.tenantId,
+        req.user!.userId,
+        validated.params.shipmentId
+      );
+      res.status(200).json(ApiResponse.success(result, 'Sales shipment packed successfully.'));
+    } catch (error) {
+      next(error);
+    }
+  };
+
+  dispatchSalesShipment = async (req: Request, res: Response, next: NextFunction) => {
+    try {
+      const validated = shipmentIdParamSchema.parse(req);
+      // Optional carrier tracking payload can be handled here
+      const result = await this.salesService.dispatchSalesShipment(
+        req.user!.tenantId,
+        req.user!.userId,
+        validated.params.shipmentId,
+        req.body
+      );
+      res.status(200).json(ApiResponse.success(result, 'Sales shipment dispatched successfully.'));
+    } catch (error) {
+      next(error);
+    }
+  };
+
   cancelSalesShipment = async (req: Request, res: Response, next: NextFunction) => {
     try {
       const validated = shipmentIdParamSchema.parse(req);

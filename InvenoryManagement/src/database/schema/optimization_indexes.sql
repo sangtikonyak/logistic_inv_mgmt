@@ -1,0 +1,2 @@
+-- Index optimization moved to src/database/setup.ts for cross-version MySQL compatibility
+-- This file is intentionally empty to prevent syntax errors in older MySQL versions
