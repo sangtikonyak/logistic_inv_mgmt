@@ -1,0 +1,60 @@
+CREATE TABLE IF NOT EXISTS finance_ap_invoices (
+  id CHAR(36) PRIMARY KEY,
+  tenant_id CHAR(36) NOT NULL,
+  supplier_id CHAR(36) NOT NULL,
+  purchase_order_id CHAR(36) DEFAULT NULL,
+  invoice_number VARCHAR(80) NOT NULL,
+  invoice_date DATE NOT NULL,
+  due_date DATE DEFAULT NULL,
+  currency_code VARCHAR(10) DEFAULT 'USD',
+  subtotal_amount DECIMAL(15, 4) DEFAULT 0,
+  tax_amount DECIMAL(15, 4) DEFAULT 0,
+  discount_amount DECIMAL(15, 4) DEFAULT 0,
+  total_amount DECIMAL(15, 4) DEFAULT 0,
+  paid_amount DECIMAL(15, 4) DEFAULT 0,
+  status ENUM('DRAFT', 'PENDING_MATCH', 'MATCHED', 'APPROVED', 'PARTIALLY_PAID', 'PAID', 'CANCELLED', 'DISPUTED') NOT NULL DEFAULT 'DRAFT',
+  notes TEXT DEFAULT NULL,
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  CONSTRAINT fk_finance_ap_tenant FOREIGN KEY (tenant_id) REFERENCES tenants(id) ON DELETE CASCADE,
+  CONSTRAINT fk_finance_ap_supplier FOREIGN KEY (supplier_id) REFERENCES suppliers(id),
+  CONSTRAINT fk_finance_ap_po FOREIGN KEY (purchase_order_id) REFERENCES purchase_orders(id)
+);
+
+CREATE TABLE IF NOT EXISTS finance_ar_invoices (
+  id CHAR(36) PRIMARY KEY,
+  tenant_id CHAR(36) NOT NULL,
+  customer_id CHAR(36) DEFAULT NULL,
+  sales_order_id CHAR(36) DEFAULT NULL,
+  invoice_number VARCHAR(80) NOT NULL,
+  invoice_date DATE NOT NULL,
+  due_date DATE DEFAULT NULL,
+  currency_code VARCHAR(10) DEFAULT 'USD',
+  subtotal_amount DECIMAL(15, 4) DEFAULT 0,
+  tax_amount DECIMAL(15, 4) DEFAULT 0,
+  discount_amount DECIMAL(15, 4) DEFAULT 0,
+  total_amount DECIMAL(15, 4) DEFAULT 0,
+  paid_amount DECIMAL(15, 4) DEFAULT 0,
+  status ENUM('DRAFT', 'ISSUED', 'PARTIALLY_PAID', 'PAID', 'CANCELLED', 'OVERDUE') NOT NULL DEFAULT 'DRAFT',
+  notes TEXT DEFAULT NULL,
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  CONSTRAINT fk_finance_ar_tenant FOREIGN KEY (tenant_id) REFERENCES tenants(id) ON DELETE CASCADE,
+  CONSTRAINT fk_finance_ar_customer FOREIGN KEY (customer_id) REFERENCES customers(id),
+  CONSTRAINT fk_finance_ar_so FOREIGN KEY (sales_order_id) REFERENCES sales_orders(id)
+);
+
+CREATE TABLE IF NOT EXISTS finance_three_way_match_logs (
+  id CHAR(36) PRIMARY KEY,
+  tenant_id CHAR(36) NOT NULL,
+  ap_invoice_id CHAR(36) NOT NULL,
+  purchase_order_id CHAR(36) NOT NULL,
+  purchase_receipt_id CHAR(36) NOT NULL,
+  match_status ENUM('SUCCESS', 'QUANTITY_MISMATCH', 'PRICE_MISMATCH', 'BOTH_MISMATCH') NOT NULL,
+  details JSON DEFAULT NULL,
+  matched_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  CONSTRAINT fk_finance_match_tenant FOREIGN KEY (tenant_id) REFERENCES tenants(id) ON DELETE CASCADE,
+  CONSTRAINT fk_finance_match_ap FOREIGN KEY (ap_invoice_id) REFERENCES finance_ap_invoices(id),
+  CONSTRAINT fk_finance_match_po FOREIGN KEY (purchase_order_id) REFERENCES purchase_orders(id),
+  CONSTRAINT fk_finance_match_receipt FOREIGN KEY (purchase_receipt_id) REFERENCES purchase_receipts(id)
+);

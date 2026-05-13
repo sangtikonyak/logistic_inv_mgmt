@@ -1,0 +1,615 @@
+[
+    {
+        "name":  "unauthorized-products",
+        "ok":  false,
+        "status":  401,
+        "body":  "The remote server returned an error: (401) Unauthorized."
+    },
+    {
+        "name":  "register-tenant-1",
+        "ok":  true,
+        "status":  200,
+        "body":  {
+                     "success":  true,
+                     "message":  "Company registered successfully.",
+                     "data":  {
+                                  "tenantId":  "049d156c-9fe0-48ea-a6d0-eb1393c00ab9",
+                                  "adminUserId":  "703a6603-0046-4b13-aab0-9759dded243a",
+                                  "message":  "Company successfully registered. You can now log in."
+                              }
+                 }
+    },
+    {
+        "name":  "login-tenant-1",
+        "ok":  true,
+        "status":  200,
+        "body":  {
+                     "success":  true,
+                     "message":  "Login successful.",
+                     "data":  {
+                                  "user":  {
+                                               "id":  "703a6603-0046-4b13-aab0-9759dded243a",
+                                               "email":  "qa.20260331163528@example.com",
+                                               "role":  "ADMIN",
+                                               "tenantId":  "049d156c-9fe0-48ea-a6d0-eb1393c00ab9"
+                                           },
+                                  "accessToken":  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI3MDNhNjYwMy0wMDQ2LTRiMTMtYWFiMC05NzU5ZGRlZDI0M2EiLCJ0ZW5hbnRJZCI6IjA0OWQxNTZjLTlmZTAtNDhlYS1hNmQwLWViMTM5M2MwMGFiOSIsInJvbGUiOiJBRE1JTiIsImlhdCI6MTc3NDk1NTEyOCwiZXhwIjoxNzc0OTU2MDI4fQ.AFiBeAD-VArcV5tecSikoNBESPQER51PreJAxtpkrIE",
+                                  "refreshToken":  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI3MDNhNjYwMy0wMDQ2LTRiMTMtYWFiMC05NzU5ZGRlZDI0M2EiLCJ0ZW5hbnRJZCI6IjA0OWQxNTZjLTlmZTAtNDhlYS1hNmQwLWViMTM5M2MwMGFiOSIsInJvbGUiOiJBRE1JTiIsImlhdCI6MTc3NDk1NTEyOCwiZXhwIjoxNzc1NTU5OTI4fQ.HGYdBp1695KfFNUFHMoZ-z9AOKXFoJoifnQMXXWS75s"
+                              }
+                 }
+    },
+    {
+        "name":  "refresh-token",
+        "ok":  true,
+        "status":  200,
+        "body":  {
+                     "success":  true,
+                     "message":  "Tokens refreshed successfully.",
+                     "data":  {
+                                  "accessToken":  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI3MDNhNjYwMy0wMDQ2LTRiMTMtYWFiMC05NzU5ZGRlZDI0M2EiLCJ0ZW5hbnRJZCI6IjA0OWQxNTZjLTlmZTAtNDhlYS1hNmQwLWViMTM5M2MwMGFiOSIsInJvbGUiOiJBRE1JTiIsImlhdCI6MTc3NDk1NTEyOCwiZXhwIjoxNzc0OTU2MDI4fQ.AFiBeAD-VArcV5tecSikoNBESPQER51PreJAxtpkrIE",
+                                  "refreshToken":  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI3MDNhNjYwMy0wMDQ2LTRiMTMtYWFiMC05NzU5ZGRlZDI0M2EiLCJ0ZW5hbnRJZCI6IjA0OWQxNTZjLTlmZTAtNDhlYS1hNmQwLWViMTM5M2MwMGFiOSIsInJvbGUiOiJBRE1JTiIsImlhdCI6MTc3NDk1NTEyOCwiZXhwIjoxNzc1NTU5OTI4fQ.HGYdBp1695KfFNUFHMoZ-z9AOKXFoJoifnQMXXWS75s"
+                              }
+                 }
+    },
+    {
+        "name":  "invite-staff",
+        "ok":  true,
+        "status":  200,
+        "body":  {
+                     "success":  true,
+                     "message":  "Invitations sent successfully.",
+                     "data":  [
+                                  {
+                                      "email":  "staff.20260331163528@example.com",
+                                      "inviteToken":  "66ad22ec52f87f675286d544245550a5da4732d28340d1f083601ae73bb026d4"
+                                  }
+                              ]
+                 }
+    },
+    {
+        "name":  "accept-invite",
+        "ok":  true,
+        "status":  200,
+        "body":  {
+                     "success":  true,
+                     "message":  "Invitation accepted.",
+                     "data":  {
+                                  "message":  "Invitation accepted successfully. Proceed to login."
+                              }
+                 }
+    },
+    {
+        "name":  "login-staff",
+        "ok":  true,
+        "status":  200,
+        "body":  {
+                     "success":  true,
+                     "message":  "Login successful.",
+                     "data":  {
+                                  "user":  {
+                                               "id":  "0ae5fe19-a7aa-4f1d-9dca-6811642d5624",
+                                               "email":  "staff.20260331163528@example.com",
+                                               "role":  "STAFF",
+                                               "tenantId":  "049d156c-9fe0-48ea-a6d0-eb1393c00ab9"
+                                           },
+                                  "accessToken":  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiIwYWU1ZmUxOS1hN2FhLTRmMWQtOWRjYS02ODExNjQyZDU2MjQiLCJ0ZW5hbnRJZCI6IjA0OWQxNTZjLTlmZTAtNDhlYS1hNmQwLWViMTM5M2MwMGFiOSIsInJvbGUiOiJTVEFGRiIsImlhdCI6MTc3NDk1NTEyOSwiZXhwIjoxNzc0OTU2MDI5fQ.c-iU3M2zsYu1oORPN1ZK-v0eCnkr3qSoyHbbDqpRSf0",
+                                  "refreshToken":  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiIwYWU1ZmUxOS1hN2FhLTRmMWQtOWRjYS02ODExNjQyZDU2MjQiLCJ0ZW5hbnRJZCI6IjA0OWQxNTZjLTlmZTAtNDhlYS1hNmQwLWViMTM5M2MwMGFiOSIsInJvbGUiOiJTVEFGRiIsImlhdCI6MTc3NDk1NTEyOSwiZXhwIjoxNzc1NTU5OTI5fQ.shCqnjwBa07_EsERqxYlTgvSP2hboamt_SIbp13dgT4"
+                              }
+                 }
+    },
+    {
+        "name":  "staff-create-unit-forbidden",
+        "ok":  false,
+        "status":  403,
+        "body":  "The remote server returned an error: (403) Forbidden."
+    },
+    {
+        "name":  "create-unit",
+        "ok":  true,
+        "status":  200,
+        "body":  {
+                     "success":  true,
+                     "message":  "Unit created successfully.",
+                     "data":  [
+                                  {
+                                      "id":  "32c734d6-af83-48da-af91-0df3f853373e",
+                                      "tenant_id":  "049d156c-9fe0-48ea-a6d0-eb1393c00ab9",
+                                      "name":  "Piece",
+                                      "code":  "PCS",
+                                      "description":  "Pieces",
+                                      "created_at":  "2026-03-31T11:05:29.000Z",
+                                      "updated_at":  "2026-03-31T11:05:29.000Z",
+                                      "deleted_at":  null
+                                  }
+                              ]
+                 }
+    },
+    {
+        "name":  "create-category",
+        "ok":  true,
+        "status":  200,
+        "body":  {
+                     "success":  true,
+                     "message":  "Category created successfully.",
+                     "data":  [
+                                  {
+                                      "id":  "3025c6fd-8615-407b-895b-3cc38d4eda4a",
+                                      "tenant_id":  "049d156c-9fe0-48ea-a6d0-eb1393c00ab9",
+                                      "parent_category_id":  null,
+                                      "name":  "Hardware",
+                                      "slug":  "hardware",
+                                      "description":  "Hardware items",
+                                      "created_at":  "2026-03-31T11:05:29.000Z",
+                                      "updated_at":  "2026-03-31T11:05:29.000Z",
+                                      "deleted_at":  null
+                                  }
+                              ]
+                 }
+    },
+    {
+        "name":  "create-custom-field",
+        "ok":  true,
+        "status":  200,
+        "body":  {
+                     "success":  true,
+                     "message":  "Custom field definition created successfully.",
+                     "data":  [
+                                  {
+                                      "id":  "8db75e73-b61c-4d8e-ad77-844545899afe",
+                                      "name":  "Brand",
+                                      "fieldKey":  "brand",
+                                      "fieldType":  "TEXT",
+                                      "appliesTo":  "PRODUCT",
+                                      "isRequired":  false,
+                                      "allowedValues":  null,
+                                      "validationRules":  null,
+                                      "sortOrder":  0
+                                  }
+                              ]
+                 }
+    },
+    {
+        "name":  "list-products-initial",
+        "ok":  false,
+        "status":  500,
+        "body":  "The remote server returned an error: (500) Internal Server Error."
+    },
+    {
+        "name":  "create-simple-product",
+        "ok":  true,
+        "status":  200,
+        "body":  {
+                     "success":  true,
+                     "message":  "Product created successfully.",
+                     "data":  {
+                                  "id":  "f691db50-bbd4-4789-9037-6a98a6052535",
+                                  "name":  "Hammer",
+                                  "description":  null,
+                                  "productType":  "SIMPLE",
+                                  "status":  "ACTIVE",
+                                  "sku":  "HAMMER",
+                                  "barcode":  null,
+                                  "isSellable":  true,
+                                  "isPurchasable":  true,
+                                  "trackInventory":  true,
+                                  "allowBackorder":  false,
+                                  "minStockLevel":  null,
+                                  "maxStockLevel":  null,
+                                  "costPrice":  5,
+                                  "sellingPrice":  10,
+                                  "currencyCode":  "USD",
+                                  "unit":  {
+                                               "id":  "32c734d6-af83-48da-af91-0df3f853373e",
+                                               "name":  "Piece",
+                                               "code":  "PCS"
+                                           },
+                                  "categories":  [
+                                                     {
+                                                         "id":  "3025c6fd-8615-407b-895b-3cc38d4eda4a",
+                                                         "name":  "Hardware",
+                                                         "slug":  "hardware",
+                                                         "parentCategoryId":  null
+                                                     }
+                                                 ],
+                                  "customFieldValues":  [
+                                                            {
+                                                                "definitionId":  "8db75e73-b61c-4d8e-ad77-844545899afe",
+                                                                "fieldKey":  "brand",
+                                                                "value":  "Acme"
+                                                            }
+                                                        ],
+                                  "bundleComponents":  [
+
+                                                       ],
+                                  "variants":  [
+
+                                               ],
+                                  "createdAt":  "2026-03-31T11:05:29.000Z",
+                                  "updatedAt":  "2026-03-31T11:05:29.000Z"
+                              }
+                 }
+    },
+    {
+        "name":  "get-simple-product",
+        "ok":  true,
+        "status":  200,
+        "body":  {
+                     "success":  true,
+                     "message":  "Product fetched successfully.",
+                     "data":  {
+                                  "id":  "f691db50-bbd4-4789-9037-6a98a6052535",
+                                  "name":  "Hammer",
+                                  "description":  null,
+                                  "productType":  "SIMPLE",
+                                  "status":  "ACTIVE",
+                                  "sku":  "HAMMER",
+                                  "barcode":  null,
+                                  "isSellable":  true,
+                                  "isPurchasable":  true,
+                                  "trackInventory":  true,
+                                  "allowBackorder":  false,
+                                  "minStockLevel":  null,
+                                  "maxStockLevel":  null,
+                                  "costPrice":  5,
+                                  "sellingPrice":  10,
+                                  "currencyCode":  "USD",
+                                  "unit":  {
+                                               "id":  "32c734d6-af83-48da-af91-0df3f853373e",
+                                               "name":  "Piece",
+                                               "code":  "PCS"
+                                           },
+                                  "categories":  [
+                                                     {
+                                                         "id":  "3025c6fd-8615-407b-895b-3cc38d4eda4a",
+                                                         "name":  "Hardware",
+                                                         "slug":  "hardware",
+                                                         "parentCategoryId":  null
+                                                     }
+                                                 ],
+                                  "customFieldValues":  [
+                                                            {
+                                                                "definitionId":  "8db75e73-b61c-4d8e-ad77-844545899afe",
+                                                                "fieldKey":  "brand",
+                                                                "value":  "Acme"
+                                                            }
+                                                        ],
+                                  "bundleComponents":  [
+
+                                                       ],
+                                  "variants":  [
+
+                                               ],
+                                  "createdAt":  "2026-03-31T11:05:29.000Z",
+                                  "updatedAt":  "2026-03-31T11:05:29.000Z"
+                              }
+                 }
+    },
+    {
+        "name":  "update-simple-product",
+        "ok":  true,
+        "status":  200,
+        "body":  {
+                     "success":  true,
+                     "message":  "Product updated successfully.",
+                     "data":  {
+                                  "id":  "f691db50-bbd4-4789-9037-6a98a6052535",
+                                  "name":  "Hammer Pro",
+                                  "description":  null,
+                                  "productType":  "SIMPLE",
+                                  "status":  "ACTIVE",
+                                  "sku":  "HAMMER",
+                                  "barcode":  null,
+                                  "isSellable":  true,
+                                  "isPurchasable":  true,
+                                  "trackInventory":  true,
+                                  "allowBackorder":  false,
+                                  "minStockLevel":  null,
+                                  "maxStockLevel":  null,
+                                  "costPrice":  5,
+                                  "sellingPrice":  12,
+                                  "currencyCode":  "USD",
+                                  "unit":  {
+                                               "id":  "32c734d6-af83-48da-af91-0df3f853373e",
+                                               "name":  "Piece",
+                                               "code":  "PCS"
+                                           },
+                                  "categories":  [
+                                                     {
+                                                         "id":  "3025c6fd-8615-407b-895b-3cc38d4eda4a",
+                                                         "name":  "Hardware",
+                                                         "slug":  "hardware",
+                                                         "parentCategoryId":  null
+                                                     }
+                                                 ],
+                                  "customFieldValues":  [
+                                                            {
+                                                                "definitionId":  "8db75e73-b61c-4d8e-ad77-844545899afe",
+                                                                "fieldKey":  "brand",
+                                                                "value":  "Acme"
+                                                            }
+                                                        ],
+                                  "bundleComponents":  [
+
+                                                       ],
+                                  "variants":  [
+
+                                               ],
+                                  "createdAt":  "2026-03-31T11:05:29.000Z",
+                                  "updatedAt":  "2026-03-31T11:05:29.000Z"
+                              }
+                 }
+    },
+    {
+        "name":  "create-variable-product",
+        "ok":  true,
+        "status":  200,
+        "body":  {
+                     "success":  true,
+                     "message":  "Product created successfully.",
+                     "data":  {
+                                  "id":  "7955a8c9-2d88-46ce-9b34-fd4f3a7bd345",
+                                  "name":  "T-Shirt",
+                                  "description":  null,
+                                  "productType":  "VARIABLE",
+                                  "status":  "ACTIVE",
+                                  "sku":  "T-SHIRT",
+                                  "barcode":  null,
+                                  "isSellable":  true,
+                                  "isPurchasable":  true,
+                                  "trackInventory":  true,
+                                  "allowBackorder":  false,
+                                  "minStockLevel":  null,
+                                  "maxStockLevel":  null,
+                                  "costPrice":  null,
+                                  "sellingPrice":  null,
+                                  "currencyCode":  "USD",
+                                  "unit":  {
+                                               "id":  "32c734d6-af83-48da-af91-0df3f853373e",
+                                               "name":  "Piece",
+                                               "code":  "PCS"
+                                           },
+                                  "categories":  [
+                                                     {
+                                                         "id":  "3025c6fd-8615-407b-895b-3cc38d4eda4a",
+                                                         "name":  "Hardware",
+                                                         "slug":  "hardware",
+                                                         "parentCategoryId":  null
+                                                     }
+                                                 ],
+                                  "customFieldValues":  [
+
+                                                        ],
+                                  "bundleComponents":  [
+
+                                                       ],
+                                  "variants":  [
+                                                   {
+                                                       "id":  "41605b17-0fc3-4308-9026-68e66d96d319",
+                                                       "name":  "Red Small",
+                                                       "sku":  "T-SHIRT-RED-SMALL",
+                                                       "barcode":  null,
+                                                       "costPrice":  8,
+                                                       "sellingPrice":  20,
+                                                       "currencyCode":  "USD",
+                                                       "sortOrder":  1,
+                                                       "unit":  null,
+                                                       "attributes":  [
+                                                                          {
+                                                                              "name":  "Color",
+                                                                              "value":  "Red"
+                                                                          },
+                                                                          {
+                                                                              "name":  "Size",
+                                                                              "value":  "S"
+                                                                          }
+                                                                      ],
+                                                       "customFieldValues":  [
+
+                                                                             ]
+                                                   },
+                                                   {
+                                                       "id":  "d3d79fd9-18ef-4f9a-b95e-073ff0f59a33",
+                                                       "name":  "Blue Medium",
+                                                       "sku":  "T-SHIRT-BLUE-MEDIUM",
+                                                       "barcode":  null,
+                                                       "costPrice":  9,
+                                                       "sellingPrice":  22,
+                                                       "currencyCode":  "USD",
+                                                       "sortOrder":  2,
+                                                       "unit":  null,
+                                                       "attributes":  [
+                                                                          {
+                                                                              "name":  "Color",
+                                                                              "value":  "Blue"
+                                                                          },
+                                                                          {
+                                                                              "name":  "Size",
+                                                                              "value":  "M"
+                                                                          }
+                                                                      ],
+                                                       "customFieldValues":  [
+
+                                                                             ]
+                                                   }
+                                               ],
+                                  "createdAt":  "2026-03-31T11:05:29.000Z",
+                                  "updatedAt":  "2026-03-31T11:05:29.000Z"
+                              }
+                 }
+    },
+    {
+        "name":  "list-attributes",
+        "ok":  true,
+        "status":  200,
+        "body":  {
+                     "success":  true,
+                     "message":  "Product attributes fetched successfully.",
+                     "data":  [
+                                  {
+                                      "id":  "38d2eb2d-5985-41d7-a1c2-3979a14769d7",
+                                      "name":  "Color",
+                                      "slug":  "color",
+                                      "sortOrder":  0,
+                                      "variantUsageCount":  2,
+                                      "values":  [
+                                                     {
+                                                         "id":  "c16d536f-c4fc-4e1c-9648-cb9c70d02158",
+                                                         "value":  "Blue",
+                                                         "sortOrder":  0
+                                                     },
+                                                     {
+                                                         "id":  "f44dec90-fcf8-49db-b5cf-5ab9c119147a",
+                                                         "value":  "Red",
+                                                         "sortOrder":  0
+                                                     }
+                                                 ]
+                                  },
+                                  {
+                                      "id":  "d00b2141-0ca5-4021-b0ce-6d15df51d327",
+                                      "name":  "Size",
+                                      "slug":  "size",
+                                      "sortOrder":  1,
+                                      "variantUsageCount":  2,
+                                      "values":  [
+                                                     {
+                                                         "id":  "75057049-5477-45c1-8706-d1c9525dd8d3",
+                                                         "value":  "M",
+                                                         "sortOrder":  0
+                                                     },
+                                                     {
+                                                         "id":  "3051b14d-ded3-44d9-9c02-9b3d7519765a",
+                                                         "value":  "S",
+                                                         "sortOrder":  0
+                                                     }
+                                                 ]
+                                  }
+                              ]
+                 }
+    },
+    {
+        "name":  "create-attribute",
+        "ok":  true,
+        "status":  200,
+        "body":  {
+                     "success":  true,
+                     "message":  "Product attribute created successfully.",
+                     "data":  [
+                                  {
+                                      "id":  "38d2eb2d-5985-41d7-a1c2-3979a14769d7",
+                                      "name":  "Color",
+                                      "slug":  "color",
+                                      "sortOrder":  0,
+                                      "variantUsageCount":  2,
+                                      "values":  [
+                                                     {
+                                                         "id":  "c16d536f-c4fc-4e1c-9648-cb9c70d02158",
+                                                         "value":  "Blue",
+                                                         "sortOrder":  0
+                                                     },
+                                                     {
+                                                         "id":  "f44dec90-fcf8-49db-b5cf-5ab9c119147a",
+                                                         "value":  "Red",
+                                                         "sortOrder":  0
+                                                     }
+                                                 ]
+                                  },
+                                  {
+                                      "id":  "d00b2141-0ca5-4021-b0ce-6d15df51d327",
+                                      "name":  "Size",
+                                      "slug":  "size",
+                                      "sortOrder":  1,
+                                      "variantUsageCount":  2,
+                                      "values":  [
+                                                     {
+                                                         "id":  "75057049-5477-45c1-8706-d1c9525dd8d3",
+                                                         "value":  "M",
+                                                         "sortOrder":  0
+                                                     },
+                                                     {
+                                                         "id":  "3051b14d-ded3-44d9-9c02-9b3d7519765a",
+                                                         "value":  "S",
+                                                         "sortOrder":  0
+                                                     }
+                                                 ]
+                                  },
+                                  {
+                                      "id":  "192a38e3-fac4-4dda-90c8-4119162d0159",
+                                      "name":  "Material",
+                                      "slug":  "material",
+                                      "sortOrder":  3,
+                                      "variantUsageCount":  0,
+                                      "values":  [
+                                                     {
+                                                         "id":  "dcbad489-f6bd-41b3-8836-aa7efc8b4348",
+                                                         "value":  "Cotton",
+                                                         "sortOrder":  0
+                                                     }
+                                                 ]
+                                  }
+                              ]
+                 }
+    },
+    {
+        "name":  "list-products-filtered",
+        "ok":  false,
+        "status":  500,
+        "body":  "The remote server returned an error: (500) Internal Server Error."
+    },
+    {
+        "name":  "register-tenant-2",
+        "ok":  true,
+        "status":  200,
+        "body":  {
+                     "success":  true,
+                     "message":  "Company registered successfully.",
+                     "data":  {
+                                  "tenantId":  "53b1a0f4-40b3-4996-a1e2-89bfe4205d14",
+                                  "adminUserId":  "5ac55759-85bd-4e90-9096-608cbf730bb6",
+                                  "message":  "Company successfully registered. You can now log in."
+                              }
+                 }
+    },
+    {
+        "name":  "login-tenant-2",
+        "ok":  true,
+        "status":  200,
+        "body":  {
+                     "success":  true,
+                     "message":  "Login successful.",
+                     "data":  {
+                                  "user":  {
+                                               "id":  "5ac55759-85bd-4e90-9096-608cbf730bb6",
+                                               "email":  "qa2.20260331163528@example.com",
+                                               "role":  "ADMIN",
+                                               "tenantId":  "53b1a0f4-40b3-4996-a1e2-89bfe4205d14"
+                                           },
+                                  "accessToken":  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI1YWM1NTc1OS04NWJkLTRlOTAtOTA5Ni02MDhjYmY3MzBiYjYiLCJ0ZW5hbnRJZCI6IjUzYjFhMGY0LTQwYjMtNDk5Ni1hMWUyLTg5YmZlNDIwNWQxNCIsInJvbGUiOiJBRE1JTiIsImlhdCI6MTc3NDk1NTEyOSwiZXhwIjoxNzc0OTU2MDI5fQ.7lhbPbYKiadlANxOYvCuRqLmvZRbhOOkcE_JW1Dsbfo",
+                                  "refreshToken":  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI1YWM1NTc1OS04NWJkLTRlOTAtOTA5Ni02MDhjYmY3MzBiYjYiLCJ0ZW5hbnRJZCI6IjUzYjFhMGY0LTQwYjMtNDk5Ni1hMWUyLTg5YmZlNDIwNWQxNCIsInJvbGUiOiJBRE1JTiIsImlhdCI6MTc3NDk1NTEyOSwiZXhwIjoxNzc1NTU5OTI5fQ.bPycVVh2IenjgWEqZe9ZabXxDbdC57P4BDjbgSLayjE"
+                              }
+                 }
+    },
+    {
+        "name":  "cross-tenant-get",
+        "ok":  false,
+        "status":  404,
+        "body":  "The remote server returned an error: (404) Not Found."
+    },
+    {
+        "name":  "delete-simple-product",
+        "ok":  true,
+        "status":  200,
+        "body":  {
+                     "success":  true,
+                     "message":  "Product deleted successfully.",
+                     "data":  {
+                                  "productId":  "f691db50-bbd4-4789-9037-6a98a6052535"
+                              }
+                 }
+    },
+    {
+        "name":  "get-deleted-simple-product",
+        "ok":  false,
+        "status":  404,
+        "body":  "The remote server returned an error: (404) Not Found."
+    }
+]

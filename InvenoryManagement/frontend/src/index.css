@@ -1,0 +1,76 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  /* ── Surfaces ── */
+  --canvas:        #F9FAFB;
+  --sidebar:       #FFFFFF;
+  --panel:         #F9FAFB;
+  --panel-strong:  #F3F4F6;
+
+  /* ── Text ── */
+  --ink:           #111827;
+  --muted:         #6B7280;
+  --muted-soft:    #9CA3AF;
+
+  /* ── Borders ── */
+  --line:          #E5E7EB;
+
+  /* ── Primary accent (dark) ── */
+  --accent:        #111827;
+  --accent-strong: #1F2937;
+  --accent-soft:   #F3F4F6;
+
+  /* ── Semantic ── */
+  --success:       #22C55E;
+  --success-bg:    #F0FDF4;
+  --success-text:  #15803D;
+  --success-border:#22C55E;
+
+  --warning:       #F59E0B;
+  --warning-bg:    #FFFBEB;
+  --warning-text:  #92400E;
+  --warning-border:#F59E0B;
+
+  --danger:        #EF4444;
+  --danger-bg:     #FFF1F2;
+  --danger-text:   #B91C1C;
+  --danger-border: #EF4444;
+
+  --info:          #3B82F6;
+  --info-bg:       #EFF6FF;
+  --info-text:     #1D4ED8;
+  --info-border:   #3B82F6;
+
+  /* ── Typography ── */
+  --font-body:     'Inter', 'SF Pro Display', sans-serif;
+
+  font-family: var(--font-body);
+  font-size: 14px;
+  color: var(--ink);
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+html { scroll-behavior: smooth; }
+
+body {
+  margin: 0;
+  min-width: 320px;
+  min-height: 100vh;
+  background: var(--canvas);
+}
+
+button, input, select, textarea { font: inherit; }
+
+a { color: inherit; text-decoration: none; }
+
+* { box-sizing: border-box; }
+
+#root { position: relative; isolation: isolate; }
+
+::selection { background: rgba(17,24,39,0.12); }

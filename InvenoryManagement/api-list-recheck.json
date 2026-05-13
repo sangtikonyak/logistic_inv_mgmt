@@ -1,0 +1,167 @@
+[
+    {
+        "name":  "register",
+        "ok":  true,
+        "status":  200,
+        "body":  {
+                     "success":  true,
+                     "message":  "Company registered successfully.",
+                     "data":  {
+                                  "tenantId":  "8d2ec511-ea06-4a0f-aa47-4c16712fae80",
+                                  "adminUserId":  "60aa3749-fffb-47ed-ac45-70ce355dfedd",
+                                  "message":  "Company successfully registered. You can now log in."
+                              }
+                 }
+    },
+    {
+        "name":  "login",
+        "ok":  true,
+        "status":  200,
+        "body":  {
+                     "success":  true,
+                     "message":  "Login successful.",
+                     "data":  {
+                                  "user":  {
+                                               "id":  "60aa3749-fffb-47ed-ac45-70ce355dfedd",
+                                               "email":  "recheck.20260331163811@example.com",
+                                               "role":  "ADMIN",
+                                               "tenantId":  "8d2ec511-ea06-4a0f-aa47-4c16712fae80"
+                                           },
+                                  "accessToken":  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2MGFhMzc0OS1mZmZiLTQ3ZWQtYWM0NS03MGNlMzU1ZGZlZGQiLCJ0ZW5hbnRJZCI6IjhkMmVjNTExLWVhMDYtNGEwZi1hYTQ3LTRjMTY3MTJmYWU4MCIsInJvbGUiOiJBRE1JTiIsImlhdCI6MTc3NDk1NTI5MSwiZXhwIjoxNzc0OTU2MTkxfQ.U-zE12X0Oq-M5rjK_LtmpWMPzivl9TK74DM2uNcLrG0",
+                                  "refreshToken":  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2MGFhMzc0OS1mZmZiLTQ3ZWQtYWM0NS03MGNlMzU1ZGZlZGQiLCJ0ZW5hbnRJZCI6IjhkMmVjNTExLWVhMDYtNGEwZi1hYTQ3LTRjMTY3MTJmYWU4MCIsInJvbGUiOiJBRE1JTiIsImlhdCI6MTc3NDk1NTI5MSwiZXhwIjoxNzc1NTYwMDkxfQ.z5YpyeT4LCg1aTcBiYYNfh0tQT-gWMJrxeDOu3377hw"
+                              }
+                 }
+    },
+    {
+        "name":  "create-unit",
+        "ok":  true,
+        "status":  200,
+        "body":  {
+                     "success":  true,
+                     "message":  "Unit created successfully.",
+                     "data":  [
+                                  {
+                                      "id":  "dbe9cfe6-489a-4b48-b90b-cd451db19fe1",
+                                      "tenant_id":  "8d2ec511-ea06-4a0f-aa47-4c16712fae80",
+                                      "name":  "Piece",
+                                      "code":  "PCS",
+                                      "description":  "Pieces",
+                                      "created_at":  "2026-03-31T11:08:11.000Z",
+                                      "updated_at":  "2026-03-31T11:08:11.000Z",
+                                      "deleted_at":  null
+                                  }
+                              ]
+                 }
+    },
+    {
+        "name":  "create-category",
+        "ok":  true,
+        "status":  200,
+        "body":  {
+                     "success":  true,
+                     "message":  "Category created successfully.",
+                     "data":  [
+                                  {
+                                      "id":  "459a7db5-8d91-4356-986d-82886211a2ee",
+                                      "tenant_id":  "8d2ec511-ea06-4a0f-aa47-4c16712fae80",
+                                      "parent_category_id":  null,
+                                      "name":  "Hardware",
+                                      "slug":  "hardware",
+                                      "description":  "Hardware items",
+                                      "created_at":  "2026-03-31T11:08:11.000Z",
+                                      "updated_at":  "2026-03-31T11:08:11.000Z",
+                                      "deleted_at":  null
+                                  }
+                              ]
+                 }
+    },
+    {
+        "name":  "create-field",
+        "ok":  true,
+        "status":  200,
+        "body":  {
+                     "success":  true,
+                     "message":  "Custom field definition created successfully.",
+                     "data":  [
+                                  {
+                                      "id":  "c6ec5f62-27ad-420c-a27b-feaeeacf7281",
+                                      "name":  "Brand",
+                                      "fieldKey":  "brand",
+                                      "fieldType":  "TEXT",
+                                      "appliesTo":  "PRODUCT",
+                                      "isRequired":  false,
+                                      "allowedValues":  null,
+                                      "validationRules":  null,
+                                      "sortOrder":  0
+                                  }
+                              ]
+                 }
+    },
+    {
+        "name":  "list-before",
+        "ok":  false,
+        "status":  500,
+        "body":  "The remote server returned an error: (500) Internal Server Error."
+    },
+    {
+        "name":  "create-product",
+        "ok":  true,
+        "status":  200,
+        "body":  {
+                     "success":  true,
+                     "message":  "Product created successfully.",
+                     "data":  {
+                                  "id":  "92119d15-3f78-4ba3-bd97-560e153a230f",
+                                  "name":  "Hammer",
+                                  "description":  null,
+                                  "productType":  "SIMPLE",
+                                  "status":  "ACTIVE",
+                                  "sku":  "HAMMER",
+                                  "barcode":  null,
+                                  "isSellable":  true,
+                                  "isPurchasable":  true,
+                                  "trackInventory":  true,
+                                  "allowBackorder":  false,
+                                  "minStockLevel":  null,
+                                  "maxStockLevel":  null,
+                                  "costPrice":  5,
+                                  "sellingPrice":  10,
+                                  "currencyCode":  "USD",
+                                  "unit":  {
+                                               "id":  "dbe9cfe6-489a-4b48-b90b-cd451db19fe1",
+                                               "name":  "Piece",
+                                               "code":  "PCS"
+                                           },
+                                  "categories":  [
+                                                     {
+                                                         "id":  "459a7db5-8d91-4356-986d-82886211a2ee",
+                                                         "name":  "Hardware",
+                                                         "slug":  "hardware",
+                                                         "parentCategoryId":  null
+                                                     }
+                                                 ],
+                                  "customFieldValues":  [
+                                                            {
+                                                                "definitionId":  "c6ec5f62-27ad-420c-a27b-feaeeacf7281",
+                                                                "fieldKey":  "brand",
+                                                                "value":  "Acme"
+                                                            }
+                                                        ],
+                                  "bundleComponents":  [
+
+                                                       ],
+                                  "variants":  [
+
+                                               ],
+                                  "createdAt":  "2026-03-31T11:08:11.000Z",
+                                  "updatedAt":  "2026-03-31T11:08:11.000Z"
+                              }
+                 }
+    },
+    {
+        "name":  "list-after",
+        "ok":  false,
+        "status":  500,
+        "body":  "The remote server returned an error: (500) Internal Server Error."
+    }
+]

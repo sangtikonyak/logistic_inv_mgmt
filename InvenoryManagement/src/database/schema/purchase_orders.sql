@@ -1,0 +1,36 @@
+CREATE TABLE IF NOT EXISTS purchase_orders (
+  id CHAR(36) PRIMARY KEY,
+  tenant_id CHAR(36) NOT NULL,
+  supplier_id CHAR(36) NOT NULL,
+  warehouse_id CHAR(36) NOT NULL,
+  purchase_order_number VARCHAR(80) NOT NULL,
+  status ENUM('DRAFT', 'PENDING_APPROVAL', 'APPROVED', 'ISSUED', 'PARTIALLY_RECEIVED', 'RECEIVED', 'CANCELLED') NOT NULL DEFAULT 'DRAFT',
+  order_date DATE NOT NULL,
+  expected_date DATE DEFAULT NULL,
+  currency_code CHAR(3) DEFAULT NULL,
+  payment_type VARCHAR(40) NOT NULL DEFAULT 'NOT_APPLICABLE',
+  payment_status VARCHAR(40) NOT NULL DEFAULT 'NOT_APPLICABLE',
+  payment_mode VARCHAR(40) NOT NULL DEFAULT 'NOT_APPLICABLE',
+  subtotal_amount DECIMAL(18, 4) NOT NULL DEFAULT 0,
+  tax_amount DECIMAL(18, 4) NOT NULL DEFAULT 0,
+  discount_amount DECIMAL(18, 4) NOT NULL DEFAULT 0,
+  total_amount DECIMAL(18, 4) NOT NULL DEFAULT 0,
+  notes TEXT DEFAULT NULL,
+  created_by CHAR(36) DEFAULT NULL,
+  updated_by CHAR(36) DEFAULT NULL,
+  deleted_by CHAR(36) DEFAULT NULL,
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  deleted_at TIMESTAMP NULL DEFAULT NULL,
+  CONSTRAINT fk_purchase_orders_tenant
+    FOREIGN KEY (tenant_id) REFERENCES tenants(id) ON DELETE CASCADE,
+  CONSTRAINT fk_purchase_orders_supplier
+    FOREIGN KEY (supplier_id) REFERENCES suppliers(id) ON DELETE RESTRICT,
+  CONSTRAINT fk_purchase_orders_warehouse
+    FOREIGN KEY (warehouse_id) REFERENCES warehouses(id) ON DELETE RESTRICT,
+  CONSTRAINT uq_purchase_orders_tenant_number UNIQUE (tenant_id, purchase_order_number),
+  INDEX idx_purchase_orders_tenant_deleted (tenant_id, deleted_at),
+  INDEX idx_purchase_orders_tenant_status (tenant_id, status),
+  INDEX idx_purchase_orders_tenant_supplier (tenant_id, supplier_id),
+  INDEX idx_purchase_orders_tenant_warehouse (tenant_id, warehouse_id)
+);
