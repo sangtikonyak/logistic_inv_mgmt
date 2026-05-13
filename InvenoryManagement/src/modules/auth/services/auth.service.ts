@@ -64,14 +64,14 @@ export class AuthService {
           },
           transaction
         );
-        
-        await this.activityService.logActivity({
-          tenantId,
-          userId: adminUserId,
-          actionType: 'REGISTER',
-          module: 'AUTH',
-          description: `Company ${companyName} registered with admin ${adminEmail}`,
-        });
+      });
+
+      await this.activityService.logActivity({
+        tenantId,
+        userId: adminUserId,
+        actionType: 'REGISTER',
+        module: 'AUTH',
+        description: `Company ${companyName} registered with admin ${adminEmail}`,
       });
     } catch (error) {
       if (error instanceof AppError) {
