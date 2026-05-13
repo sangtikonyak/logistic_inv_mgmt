@@ -1,0 +1,1120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>LogistiQ — Enterprise Inventory & Logistics Platform</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --bg:           #F4F6FF;
+  --surface:      #FFFFFF;
+  --surface-r:    #F8F9FF;
+  --border:       #E2E8F8;
+  --border-s:     #CBD5E1;
+  --accent:       #0427C5;
+  --accent-h:     #0318A8;
+  --accent-soft:  rgba(4,39,197,.07);
+  --accent-glow:  rgba(4,39,197,.16);
+  --accent-grad:  linear-gradient(135deg,#0427C5 0%,#335CFF 100%);
+  --text:         #0F172A;
+  --text-s:       #475569;
+  --text-m:       #94A3B8;
+  --success:      #10B981;
+  --success-bg:   #ECFDF5;
+  --success-b:    #A7F3D0;
+  --warning:      #F59E0B;
+  --warning-bg:   #FFFBEB;
+  --warning-b:    #FDE68A;
+  --danger:       #EF4444;
+  --danger-bg:    #FEF2F2;
+  --danger-b:     #FECACA;
+  --info:         #3B82F6;
+  --info-bg:      #EFF6FF;
+  --info-b:       #BFDBFE;
+  --sh-base:      0 1px 3px rgba(15,23,42,.05), 0 1px 2px rgba(15,23,42,.04);
+  --sh-raised:    0 4px 16px rgba(15,23,42,.07), 0 1px 3px rgba(15,23,42,.04);
+  --sh-float:     0 12px 40px rgba(4,39,197,.10), 0 2px 6px rgba(15,23,42,.04);
+  --r-card:       18px;
+  --r-btn:        12px;
+  --r-pill:       999px;
+}
+
+html, body {
+  width: 100%; height: 100%; overflow: hidden;
+  background: var(--bg);
+  font-family: 'Inter', system-ui, sans-serif;
+  color: var(--text);
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ──────────────────── LAYOUT ──────────────────── */
+#vp { width: 100vw; height: 100vh; display: flex; flex-direction: column; }
+
+/* top bar */
+.topbar {
+  height: 52px; flex-shrink: 0;
+  background: var(--surface);
+  border-bottom: 1px solid var(--border);
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 0 36px;
+}
+.brand {
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 16px; font-weight: 700; color: var(--text); letter-spacing: -.4px;
+}
+.brand span { color: var(--accent); }
+.nav-group { display: flex; align-items: center; gap: 12px; }
+.nav-title { font-size: 13px; font-weight: 500; color: var(--text-s); }
+.nav-btn {
+  height: 32px; padding: 0 16px; border-radius: var(--r-btn);
+  border: 1px solid var(--border-s); background: var(--surface-r);
+  font-size: 13px; font-weight: 600; color: var(--text-s); cursor: pointer;
+  transition: all .15s;
+}
+.nav-btn:hover { background: var(--accent); color: #fff; border-color: var(--accent); box-shadow: var(--sh-float); }
+.nav-count { font-size: 12px; color: var(--text-m); min-width: 52px; text-align: center; }
+
+/* slide area */
+#sa { flex: 1; overflow: hidden; position: relative; }
+
+.slide {
+  display: none; position: absolute; inset: 0;
+  background: var(--surface);
+  padding: 52px 68px;
+  animation: si .3s cubic-bezier(.16,1,.3,1);
+}
+.slide.active { display: flex; flex-direction: column; }
+@keyframes si { from { opacity:0; transform:translateY(12px); } to { opacity:1; transform:none; } }
+
+/* dot bar */
+.dotbar {
+  height: 42px; flex-shrink: 0;
+  background: var(--surface); border-top: 1px solid var(--border);
+  display: flex; align-items: center; justify-content: center; gap: 7px;
+}
+.dot {
+  width: 7px; height: 7px; border-radius: 50%;
+  background: var(--border-s); cursor: pointer; transition: all .2s;
+}
+.dot.active { background: var(--accent); transform: scale(1.4); }
+
+/* ──────────────────── TYPOGRAPHY ──────────────────── */
+.label {
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 10px; font-weight: 700; letter-spacing: 2.2px;
+  text-transform: uppercase; color: var(--accent); margin-bottom: 10px;
+}
+h1 {
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 50px; font-weight: 800; line-height: 1.1; letter-spacing: -.8px;
+  color: var(--text);
+}
+h2 {
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 30px; font-weight: 700; letter-spacing: -.5px; margin-bottom: 20px; color: var(--text);
+}
+h3 {
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 14px; font-weight: 700; color: var(--text); margin-bottom: 7px;
+}
+p { font-size: 14px; line-height: 1.68; color: var(--text-s); }
+.sub { font-size: 17px; color: var(--text-s); margin-top: 14px; line-height: 1.65; max-width: 580px; }
+
+/* ──────────────────── DIVIDER ──────────────────── */
+.dv { width: 40px; height: 3px; background: var(--accent); border-radius: 2px; margin: 10px 0 22px; }
+
+/* ──────────────────── GRID ──────────────────── */
+.g2 { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+.g3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 16px; }
+.g4 { display: grid; grid-template-columns: repeat(4,1fr); gap: 14px; }
+.g5 { display: grid; grid-template-columns: repeat(5,1fr); gap: 13px; }
+
+/* ──────────────────── CARDS ──────────────────── */
+.card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--r-card);
+  padding: 20px 22px;
+  box-shadow: var(--sh-base);
+  transition: box-shadow .2s;
+}
+.card:hover { box-shadow: var(--sh-raised); }
+
+/* filled accent cards */
+.card-blue  { background: var(--accent);   border-color: var(--accent);   color: #fff; box-shadow: var(--sh-float); }
+.card-green { background: var(--success);  border-color: var(--success);  color: #fff; box-shadow: 0 12px 40px rgba(16,185,129,.18); }
+.card-amber { background: var(--warning);  border-color: var(--warning);  color: #fff; box-shadow: 0 12px 40px rgba(245,158,11,.18); }
+.card-blue h3, .card-green h3, .card-amber h3 { color: #fff; }
+.card-blue p,  .card-green p,  .card-amber p  { color: rgba(255,255,255,.82); }
+
+/* soft tinted cards */
+.card-soft-blue  { background: var(--info-bg);    border-color: var(--info-b);    }
+.card-soft-green { background: var(--success-bg); border-color: var(--success-b); }
+.card-soft-amber { background: var(--warning-bg); border-color: var(--warning-b); }
+.card-soft-red   { background: var(--danger-bg);  border-color: var(--danger-b);  }
+
+/* left-stripe variants */
+.card-stripe-blue  { background: var(--info-bg);    border-left: 4px solid var(--accent);  border-top: 1px solid var(--info-b);    border-right: 1px solid var(--info-b);    border-bottom: 1px solid var(--info-b);    }
+.card-stripe-green { background: var(--success-bg); border-left: 4px solid var(--success); border-top: 1px solid var(--success-b); border-right: 1px solid var(--success-b); border-bottom: 1px solid var(--success-b); }
+.card-stripe-amber { background: var(--warning-bg); border-left: 4px solid var(--warning); border-top: 1px solid var(--warning-b); border-right: 1px solid var(--warning-b); border-bottom: 1px solid var(--warning-b); }
+.card-stripe-red   { background: var(--danger-bg);  border-left: 4px solid var(--danger);  border-top: 1px solid var(--danger-b);  border-right: 1px solid var(--danger-b);  border-bottom: 1px solid var(--danger-b);  }
+
+/* dark panel */
+.panel-dark {
+  background: #0F172A; border-radius: var(--r-card);
+  padding: 28px 26px; color: #fff;
+  box-shadow: 0 20px 60px rgba(15,23,42,.22);
+}
+
+/* ──────────────────── ICON BOX ──────────────────── */
+.ib {
+  width: 38px; height: 38px; border-radius: 10px;
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0; margin-bottom: 12px;
+}
+.ib-blue  { background: var(--info-bg); }
+.ib-green { background: var(--success-bg); }
+.ib-amber { background: var(--warning-bg); }
+.ib-white { background: rgba(255,255,255,.2); }
+.ib svg   { width: 18px; height: 18px; }
+
+/* ──────────────────── BADGE / TAG ──────────────────── */
+.badge {
+  display: inline-block; font-size: 10px; font-weight: 700;
+  padding: 3px 10px; border-radius: var(--r-pill); letter-spacing: .3px;
+}
+.b-blue  { background: var(--info-bg);    color: var(--accent);  border: 1px solid var(--info-b);    }
+.b-green { background: var(--success-bg); color: var(--success); border: 1px solid var(--success-b); }
+.b-amber { background: var(--warning-bg); color: var(--warning); border: 1px solid var(--warning-b); }
+.b-red   { background: var(--danger-bg);  color: var(--danger);  border: 1px solid var(--danger-b);  }
+.b-gray  { background: var(--surface-r);  color: var(--text-s);  border: 1px solid var(--border-s);  }
+.b-white { background: rgba(255,255,255,.2); color: #fff; border: 1px solid rgba(255,255,255,.3); }
+
+/* ──────────────────── FEATURE ROW ──────────────────── */
+.feat-row {
+  display: flex; align-items: flex-start; gap: 14px;
+  background: var(--surface-r);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 12px 16px;
+}
+.feat-row .fi {
+  width: 34px; height: 34px; border-radius: 9px; flex-shrink: 0;
+  display: flex; align-items: center; justify-content: center;
+}
+.feat-row .fi-blue  { background: var(--info-bg); }
+.feat-row .fi-green { background: var(--success-bg); }
+.feat-row .fi-amber { background: var(--warning-bg); }
+.feat-row .ft { font-size: 13px; font-weight: 700; color: var(--text); font-family: 'Space Grotesk',sans-serif; }
+.feat-row .fd { font-size: 12px; color: var(--text-m); margin-top: 2px; line-height: 1.4; }
+
+/* ──────────────────── FLOW ──────────────────── */
+.flow { display: flex; align-items: center; }
+.fs {
+  flex: 1; text-align: center; font-size: 12px; font-weight: 600;
+  font-family: 'Space Grotesk', sans-serif;
+  background: var(--surface-r); border: 1px solid var(--border);
+  border-radius: 10px; padding: 10px 8px; color: var(--text); min-width: 0;
+}
+.fs.hi  { background: var(--info-bg);    border-color: var(--info-b);    color: var(--accent); }
+.fs.hi2 { background: var(--success-bg); border-color: var(--success-b); color: var(--success); }
+.fa { color: var(--border-s); font-size: 18px; padding: 0 3px; flex-shrink: 0; font-weight: 700; }
+
+/* ──────────────────── TABLE ──────────────────── */
+table { width: 100%; border-collapse: collapse; font-size: 13px; }
+thead th {
+  background: var(--surface-r); color: var(--text-m);
+  text-align: left; padding: 9px 14px;
+  font-size: 10px; text-transform: uppercase; letter-spacing: 1.2px; font-weight: 700;
+  border-bottom: 1px solid var(--border);
+}
+tbody td { padding: 10px 14px; border-bottom: 1px solid var(--border); color: var(--text-s); }
+tbody tr:last-child td { border-bottom: none; }
+tbody tr:hover td { background: var(--surface-r); }
+
+/* ──────────────────── STAT ──────────────────── */
+.stat-box {
+  border-radius: 14px; padding: 18px 16px; text-align: center;
+  box-shadow: var(--sh-base);
+}
+.stat-num { font-family: 'Space Grotesk',sans-serif; font-size: 36px; font-weight: 800; line-height: 1; letter-spacing: -1px; }
+.stat-lbl { font-size: 11px; color: var(--text-m); margin-top: 5px; font-weight: 500; line-height: 1.3; }
+
+/* ──────────────────── CALLOUT ──────────────────── */
+.callout {
+  background: var(--accent-soft);
+  border: 1px solid rgba(4,39,197,.16);
+  border-radius: 12px; padding: 14px 18px;
+}
+.callout p { color: var(--accent); font-weight: 600; font-size: 13px; }
+.callout-success { background: var(--success-bg); border: 1px solid var(--success-b); border-radius: 12px; padding: 14px 18px; }
+.callout-success p { color: var(--success); font-weight: 600; font-size: 13px; }
+
+/* ──────────────────── LIST ──────────────────── */
+ul.rows { list-style: none; }
+ul.rows li {
+  padding: 8px 0; font-size: 13px; color: var(--text-s);
+  display: flex; align-items: flex-start; gap: 10px;
+  border-bottom: 1px solid var(--border);
+}
+ul.rows li:last-child { border-bottom: none; }
+ul.rows li::before { content: '→'; color: var(--accent); font-weight: 700; flex-shrink: 0; font-size: 12px; margin-top: 1px; }
+
+/* ──────────────────── TINTED PANEL ──────────────────── */
+.tp-blue  { background: var(--info-bg);    border: 1px solid var(--info-b);    border-radius: 14px; padding: 16px 18px; }
+.tp-green { background: var(--success-bg); border: 1px solid var(--success-b); border-radius: 14px; padding: 16px 18px; }
+.tp-amber { background: var(--warning-bg); border: 1px solid var(--warning-b); border-radius: 14px; padding: 16px 18px; }
+.tp-label { font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 1.5px; margin-bottom: 10px; }
+.tp-blue  .tp-label { color: var(--accent); }
+.tp-green .tp-label { color: var(--success); }
+.tp-amber .tp-label { color: var(--warning); }
+
+/* kbd */
+.kb { position: fixed; bottom: 50px; right: 22px; font-size: 11px; color: var(--text-m); background: var(--surface-r); border: 1px solid var(--border); border-radius: 8px; padding: 5px 12px; }
+kbd { background: var(--surface); border: 1px solid var(--border-s); border-radius: 3px; padding: 1px 5px; font-size: 11px; }
+</style>
+</head>
+<body>
+<div id="vp">
+
+  <!-- Top bar -->
+  <div class="topbar">
+    <div class="brand">Logisti<span>Q</span></div>
+    <div class="nav-group">
+      <span class="nav-title" id="navTitle"></span>
+      <button class="nav-btn" onclick="prev()">← Back</button>
+      <span class="nav-count" id="counter">1 / 15</span>
+      <button class="nav-btn" onclick="next()">Next →</button>
+    </div>
+  </div>
+
+  <div id="sa">
+
+    <!-- ════════════════════════════════════ 1. TITLE -->
+    <div class="slide active" data-title="Introduction">
+      <div style="display:flex; height:100%; gap:0;">
+        <!-- left dark panel -->
+        <div class="panel-dark" style="width:46%; margin-right:36px; display:flex; flex-direction:column; justify-content:space-between; flex-shrink:0;">
+          <div>
+            <div style="font-size:10px; font-weight:700; letter-spacing:2px; text-transform:uppercase; color:#64748b; margin-bottom:18px;">Platform Overview · 2025</div>
+            <div style="font-family:'Space Grotesk',sans-serif; font-size:36px; font-weight:800; line-height:1.15; color:#fff; margin-bottom:18px; letter-spacing:-.6px;">The Operating System<br>for Modern Logistics</div>
+            <p style="font-size:14px; color:#94a3b8; line-height:1.65;">LogistiQ unifies inventory, warehouse operations, procurement, sales fulfilment, and analytics into one multi-tenant platform — built for distributors, 3PLs, and manufacturers.</p>
+          </div>
+          <div style="display:flex; flex-wrap:wrap; gap:7px; margin-top:24px;">
+            <span class="badge b-white">Multi-Tenant SaaS</span>
+            <span class="badge b-white">Event-Driven WMS</span>
+            <span class="badge b-white">Real-Time Inventory</span>
+            <span class="badge b-white">RBAC Security</span>
+            <span class="badge b-white">FIFO Costing</span>
+          </div>
+        </div>
+        <!-- right stats -->
+        <div style="flex:1; display:flex; flex-direction:column; justify-content:center; gap:20px;">
+          <div>
+            <div class="label">By The Numbers</div>
+            <h2 style="margin-bottom:6px;">Built to run real operations</h2>
+            <p style="max-width:480px;">Thirteen integrated modules covering every stage of the supply chain — from supplier to end customer — with a single data model and strict tenant isolation throughout.</p>
+          </div>
+          <div class="g4" style="margin-top:8px;">
+            <div class="stat-box" style="background:var(--info-bg); border:1px solid var(--info-b);">
+              <div class="stat-num" style="color:var(--accent);">13</div>
+              <div class="stat-lbl">Core Modules</div>
+            </div>
+            <div class="stat-box" style="background:var(--success-bg); border:1px solid var(--success-b);">
+              <div class="stat-num" style="color:var(--success);">60+</div>
+              <div class="stat-lbl">API Endpoints</div>
+            </div>
+            <div class="stat-box" style="background:var(--warning-bg); border:1px solid var(--warning-b);">
+              <div class="stat-num" style="color:var(--warning);">55+</div>
+              <div class="stat-lbl">Database Tables</div>
+            </div>
+            <div class="stat-box" style="background:#0427C5; border:none;">
+              <div class="stat-num" style="color:#fff;">100%</div>
+              <div class="stat-lbl" style="color:rgba(255,255,255,.75);">Tenant Isolated</div>
+            </div>
+          </div>
+          <div class="callout" style="margin-top:4px;">
+            <p>Every module shares the same inventory ledger — there is no data synchronisation between systems because there is only one system.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ════════════════════════════════════ 2. PROBLEM -->
+    <div class="slide" data-title="The Problem">
+      <div style="display:flex; height:100%; gap:0;">
+        <!-- left dark panel with stats -->
+        <div class="panel-dark" style="width:40%; margin-right:36px; flex-shrink:0; display:flex; flex-direction:column; justify-content:space-between;">
+          <div>
+            <div style="font-size:10px; font-weight:700; letter-spacing:2px; text-transform:uppercase; color:#64748b; margin-bottom:14px;">The Reality</div>
+            <div style="font-family:'Space Grotesk',sans-serif; font-size:24px; font-weight:800; color:#fff; line-height:1.2; margin-bottom:14px;">Most operations teams are running on tools built for a different era.</div>
+            <p style="font-size:13px; color:#94a3b8; line-height:1.6;">Spreadsheets, standalone apps, and email threads cannot support the speed, accuracy, or scale that modern supply chains demand. The cost is paid in stockouts, missed deliveries, and write-offs — every day.</p>
+          </div>
+          <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-top:20px;">
+            <div style="background:#ffffff0d; border:1px solid #ffffff15; border-radius:12px; padding:14px;">
+              <div style="font-family:'Space Grotesk',sans-serif; font-size:26px; font-weight:800; color:#f87171; letter-spacing:-1px;">34%</div>
+              <div style="font-size:11px; color:#9ca3af; margin-top:4px; line-height:1.4;">of discrepancies caused by manual data re-entry</div>
+            </div>
+            <div style="background:#ffffff0d; border:1px solid #ffffff15; border-radius:12px; padding:14px;">
+              <div style="font-family:'Space Grotesk',sans-serif; font-size:26px; font-weight:800; color:#fbbf24; letter-spacing:-1px;">2–4 days</div>
+              <div style="font-size:11px; color:#9ca3af; margin-top:4px; line-height:1.4;">average reporting lag before decisions can be made</div>
+            </div>
+            <div style="background:#ffffff0d; border:1px solid #ffffff15; border-radius:12px; padding:14px;">
+              <div style="font-family:'Space Grotesk',sans-serif; font-size:26px; font-weight:800; color:#f87171; letter-spacing:-1px;">68%</div>
+              <div style="font-size:11px; color:#9ca3af; margin-top:4px; line-height:1.4;">of returns unprocessed within 5 business days</div>
+            </div>
+            <div style="background:#ffffff0d; border:1px solid #ffffff15; border-radius:12px; padding:14px;">
+              <div style="font-family:'Space Grotesk',sans-serif; font-size:26px; font-weight:800; color:#fbbf24; letter-spacing:-1px;">3–5×</div>
+              <div style="font-size:11px; color:#9ca3af; margin-top:4px; line-height:1.4;">higher cost for 3PLs running one instance per client</div>
+            </div>
+          </div>
+        </div>
+        <!-- right: pain points -->
+        <div style="flex:1; display:flex; flex-direction:column; justify-content:space-between; padding:2px 0;">
+          <div style="font-size:10px; font-weight:700; letter-spacing:2px; text-transform:uppercase; color:var(--text-m); margin-bottom:6px;">Six Operational Pain Points</div>
+          <div style="border-left:3px solid #fca5a5; padding:9px 0 9px 16px;">
+            <div style="display:flex; justify-content:space-between; align-items:baseline; margin-bottom:3px;">
+              <span style="font-family:'Space Grotesk',sans-serif; font-size:14px; font-weight:700; color:var(--text);">Siloed Systems</span>
+              <span class="badge b-red">Data Integrity</span>
+            </div>
+            <p style="font-size:13px;">Stock in a spreadsheet, POs in one tool, orders in another. Every handoff between systems introduces lag, duplication, and inconsistency that compounds daily.</p>
+          </div>
+          <div style="height:1px; background:var(--border); margin:1px 0;"></div>
+          <div style="border-left:3px solid var(--warning-b); padding:9px 0 9px 16px;">
+            <div style="display:flex; justify-content:space-between; align-items:baseline; margin-bottom:3px;">
+              <span style="font-family:'Space Grotesk',sans-serif; font-size:14px; font-weight:700; color:var(--text);">Invisible Inventory</span>
+              <span class="badge b-amber">Capital Risk</span>
+            </div>
+            <p style="font-size:13px;">No real-time stock view across warehouses. Stockouts go undetected, overstock ties up cash, and expiry write-offs accumulate before anyone notices.</p>
+          </div>
+          <div style="height:1px; background:var(--border); margin:1px 0;"></div>
+          <div style="border-left:3px solid #fca5a5; padding:9px 0 9px 16px;">
+            <div style="display:flex; justify-content:space-between; align-items:baseline; margin-bottom:3px;">
+              <span style="font-family:'Space Grotesk',sans-serif; font-size:14px; font-weight:700; color:var(--text);">Manual Returns Handling</span>
+              <span class="badge b-red">Revenue Leak</span>
+            </div>
+            <p style="font-size:13px;">Returns managed via email threads with no disposition workflow. Restockable goods get written off as losses, and disputes have no audit trail to resolve them.</p>
+          </div>
+          <div style="height:1px; background:var(--border); margin:1px 0;"></div>
+          <div style="border-left:3px solid var(--warning-b); padding:9px 0 9px 16px;">
+            <div style="display:flex; justify-content:space-between; align-items:baseline; margin-bottom:3px;">
+              <span style="font-family:'Space Grotesk',sans-serif; font-size:14px; font-weight:700; color:var(--text);">No Fulfilment Visibility</span>
+              <span class="badge b-amber">Customer Experience</span>
+            </div>
+            <p style="font-size:13px;">Sales and warehouse teams operate in isolation. Delivery dates are estimates with no backing — when they fail, customer relationships suffer long-term damage.</p>
+          </div>
+          <div style="height:1px; background:var(--border); margin:1px 0;"></div>
+          <div style="border-left:3px solid #fca5a5; padding:9px 0 9px 16px;">
+            <div style="display:flex; justify-content:space-between; align-items:baseline; margin-bottom:3px;">
+              <span style="font-family:'Space Grotesk',sans-serif; font-size:14px; font-weight:700; color:var(--text);">Zero Operational Analytics</span>
+              <span class="badge b-red">Decision Lag</span>
+            </div>
+            <p style="font-size:13px;">Reporting means CSV exports rebuilt weekly as pivot tables. Stock turnover, COGS, and supplier performance are unknown until it is too late to act on them.</p>
+          </div>
+          <div style="height:1px; background:var(--border); margin:1px 0;"></div>
+          <div style="border-left:3px solid var(--warning-b); padding:9px 0 9px 16px;">
+            <div style="display:flex; justify-content:space-between; align-items:baseline; margin-bottom:3px;">
+              <span style="font-family:'Space Grotesk',sans-serif; font-size:14px; font-weight:700; color:var(--text);">No Multi-Tenant Architecture</span>
+              <span class="badge b-amber">Scale Ceiling</span>
+            </div>
+            <p style="font-size:13px;">3PLs run a separate deployment per client — infrastructure and maintenance costs scale linearly with every new customer, creating a hard ceiling on growth and margins.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ════════════════════════════════════ 3. SOLUTION -->
+    <div class="slide" data-title="Our Solution">
+      <div class="label">The Platform</div>
+      <h2>One platform. Every operation. Real time.</h2>
+      <div class="dv"></div>
+      <div class="g2" style="flex:1; align-items:stretch; gap:28px;">
+        <!-- left: feature rows -->
+        <div style="display:flex; flex-direction:column; gap:9px;">
+          <p style="font-size:14px; margin-bottom:4px;">LogistiQ connects every operational workflow — from the moment a purchase order is raised to the moment a customer receives their delivery — with live inventory as the single source of truth.</p>
+          <div class="feat-row">
+            <div class="fi fi-blue"><svg fill="none" stroke="var(--accent)" stroke-width="2" viewBox="0 0 24 24"><path d="M4 6h16M4 12h16M4 18h16"/></svg></div>
+            <div><div class="ft">Unified Inventory Ledger</div><div class="fd">Single source of truth across all warehouses and channels — always live, never batched</div></div>
+          </div>
+          <div class="feat-row">
+            <div class="fi fi-green"><svg fill="none" stroke="var(--success)" stroke-width="2" viewBox="0 0 24 24"><path d="M13 10V3L4 14h7v7l9-11h-7z"/></svg></div>
+            <div><div class="ft">Auto-Triggered Warehouse Tasks</div><div class="fd">Picklists and putaway tasks created automatically the moment an order is confirmed or goods arrive</div></div>
+          </div>
+          <div class="feat-row">
+            <div class="fi fi-amber"><svg fill="none" stroke="var(--warning)" stroke-width="2" viewBox="0 0 24 24"><path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg></div>
+            <div><div class="ft">Full Audit Trail on Every Movement</div><div class="fd">Every stock change, transfer, and adjustment logged with user, timestamp, and tenant context</div></div>
+          </div>
+          <div class="feat-row">
+            <div class="fi fi-blue"><svg fill="none" stroke="var(--accent)" stroke-width="2" viewBox="0 0 24 24"><path d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"/></svg></div>
+            <div><div class="ft">Role-Based Access Control</div><div class="fd">Each team — warehouse, procurement, sales, finance — sees exactly what they need, nothing more</div></div>
+          </div>
+          <div class="feat-row">
+            <div class="fi fi-green"><svg fill="none" stroke="var(--success)" stroke-width="2" viewBox="0 0 24 24"><path d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/></svg></div>
+            <div><div class="ft">Built-In Analytics — No Exports Required</div><div class="fd">Live dashboards with cross-module data — decisions made in the moment, not after a reporting cycle</div></div>
+          </div>
+          <div class="feat-row">
+            <div class="fi fi-amber"><svg fill="none" stroke="var(--warning)" stroke-width="2" viewBox="0 0 24 24"><path d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"/></svg></div>
+            <div><div class="ft">Multi-Tenant by Design</div><div class="fd">One platform, unlimited companies — strict data isolation with zero cross-tenant risk at the architecture level</div></div>
+          </div>
+        </div>
+        <!-- right: who it's for -->
+        <div style="display:flex; flex-direction:column; gap:11px;">
+          <div style="font-size:10px; font-weight:700; text-transform:uppercase; letter-spacing:1.8px; color:var(--text-m);">Who It's For</div>
+          <div class="card-blue" style="border-radius:var(--r-card); padding:20px 22px; flex:1;">
+            <div style="display:flex; align-items:center; gap:10px; margin-bottom:10px;">
+              <div class="ib ib-white"><svg fill="none" stroke="#fff" stroke-width="2" viewBox="0 0 24 24"><path d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z"/></svg></div>
+              <h3>Distributors</h3>
+            </div>
+            <p style="margin-bottom:12px;">Manage hundreds of SKUs, multiple supplier relationships, and complex multi-warehouse stock across regions from a single operational view.</p>
+            <div style="display:flex; gap:6px; flex-wrap:wrap;">
+              <span class="badge b-white">Multi-warehouse stock</span>
+              <span class="badge b-white">Supplier PO tracking</span>
+              <span class="badge b-white">SKU variants & bundles</span>
+            </div>
+          </div>
+          <div class="card-green" style="border-radius:var(--r-card); padding:20px 22px; flex:1;">
+            <div style="display:flex; align-items:center; gap:10px; margin-bottom:10px;">
+              <div class="ib ib-white"><svg fill="none" stroke="#fff" stroke-width="2" viewBox="0 0 24 24"><path d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"/></svg></div>
+              <h3>Third-Party Logistics (3PLs)</h3>
+            </div>
+            <p style="margin-bottom:12px;">Onboard a new client as an isolated tenant in minutes. Manage each client's inventory, orders, and returns independently on one codebase.</p>
+            <div style="display:flex; gap:6px; flex-wrap:wrap;">
+              <span class="badge b-white">Instant client onboarding</span>
+              <span class="badge b-white">Strict data isolation</span>
+              <span class="badge b-white">Per-client reporting</span>
+            </div>
+          </div>
+          <div class="card-amber" style="border-radius:var(--r-card); padding:20px 22px; flex:1;">
+            <div style="display:flex; align-items:center; gap:10px; margin-bottom:10px;">
+              <div class="ib ib-white"><svg fill="none" stroke="#fff" stroke-width="2" viewBox="0 0 24 24"><path d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"/><path d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/></svg></div>
+              <h3>Manufacturers</h3>
+            </div>
+            <p style="margin-bottom:12px;">Track raw materials through to finished goods dispatch. Every component is costed at receipt via FIFO layers and traced through the final shipment.</p>
+            <div style="display:flex; gap:6px; flex-wrap:wrap;">
+              <span class="badge b-white">FIFO cost layers</span>
+              <span class="badge b-white">Lot & batch tracking</span>
+              <span class="badge b-white">Procurement workflow</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ════════════════════════════════════ 4. PLATFORM MAP -->
+    <div class="slide" data-title="Platform Overview">
+      <div class="label">Feature Map</div>
+      <h2>Everything your operations team needs — in one place</h2>
+      <div class="dv"></div>
+      <div class="g5" style="flex:1; align-items:start;">
+        <div class="card-blue" style="border-radius:var(--r-card); padding:18px 20px;">
+          <div class="ib ib-white"><svg fill="none" stroke="#fff" stroke-width="2" viewBox="0 0 24 24"><path d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"/></svg></div>
+          <h3>Products</h3>
+          <p>SKUs, variants, bundles, attributes, units of measure, categories</p>
+        </div>
+        <div class="card-green" style="border-radius:var(--r-card); padding:18px 20px;">
+          <div class="ib ib-white"><svg fill="none" stroke="#fff" stroke-width="2" viewBox="0 0 24 24"><path d="M9 17v-2m3 2v-4m3 4v-6m2 10H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg></div>
+          <h3>Inventory</h3>
+          <p>Real-time stock, lot tracking, FIFO costing, cycle counts, transfers</p>
+        </div>
+        <div class="card-amber" style="border-radius:var(--r-card); padding:18px 20px;">
+          <div class="ib ib-white"><svg fill="none" stroke="#fff" stroke-width="2" viewBox="0 0 24 24"><path d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-6l-2-2H5a2 2 0 00-2 2z"/></svg></div>
+          <h3>Warehouse WMS</h3>
+          <p>Zones, bins, picklists, putaway tasks, cycle counts</p>
+        </div>
+        <div class="card-stripe-blue" style="padding:18px 20px;">
+          <div class="ib ib-blue"><svg fill="none" stroke="var(--accent)" stroke-width="2" viewBox="0 0 24 24"><path d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"/></svg></div>
+          <h3>Purchase</h3>
+          <p>Suppliers, purchase orders, goods receipts, purchase returns</p>
+        </div>
+        <div class="card-stripe-green" style="padding:18px 20px;">
+          <div class="ib ib-green"><svg fill="none" stroke="var(--success)" stroke-width="2" viewBox="0 0 24 24"><path d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"/></svg></div>
+          <h3>Sales</h3>
+          <p>Orders, reservations, shipments, customer management</p>
+        </div>
+        <div class="card-stripe-amber" style="padding:18px 20px;">
+          <div class="ib ib-amber"><svg fill="none" stroke="var(--warning)" stroke-width="2" viewBox="0 0 24 24"><path d="M3 10h10a8 8 0 018 8v2M3 10l6 6m-6-6l6-6"/></svg></div>
+          <h3>Returns</h3>
+          <p>RMA processing, disposition decisions, inventory restocking</p>
+        </div>
+        <div class="card-blue" style="border-radius:var(--r-card); padding:18px 20px;">
+          <div class="ib ib-white"><svg fill="none" stroke="#fff" stroke-width="2" viewBox="0 0 24 24"><path d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01"/></svg></div>
+          <h3>Procurement</h3>
+          <p>Requisitions, approvals, PO conversion workflow</p>
+        </div>
+        <div class="card-green" style="border-radius:var(--r-card); padding:18px 20px;">
+          <div class="ib ib-white"><svg fill="none" stroke="#fff" stroke-width="2" viewBox="0 0 24 24"><path d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"/></svg></div>
+          <h3>Replenishment</h3>
+          <p>Demand snapshots, reorder point calculation, low-stock alerts</p>
+        </div>
+        <div class="card-amber" style="border-radius:var(--r-card); padding:18px 20px;">
+          <div class="ib ib-white"><svg fill="none" stroke="#fff" stroke-width="2" viewBox="0 0 24 24"><path d="M11 3.055A9.001 9.001 0 1020.945 13H11V3.055z"/><path d="M20.488 9H15V3.512A9.025 9.025 0 0120.488 9z"/></svg></div>
+          <h3>Reporting</h3>
+          <p>Cross-module analytics, stock valuation, sales &amp; purchase trends</p>
+        </div>
+        <div class="card-stripe-blue" style="padding:18px 20px;">
+          <div class="ib ib-blue"><svg fill="none" stroke="var(--accent)" stroke-width="2" viewBox="0 0 24 24"><path d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4"/></svg></div>
+          <h3>Logistics / TMS</h3>
+          <p>Carrier management, dispatch tracking, delivery status</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- ════════════════════════════════════ 5. WORKFLOW -->
+    <div class="slide" data-title="Fulfilment Workflow">
+      <div class="label">Core Workflows</div>
+      <h2>Order to delivery — three pipelines, one system</h2>
+      <div class="dv"></div>
+      <div style="flex:1; display:flex; flex-direction:column; justify-content:space-around; gap:12px;">
+        <div class="tp-blue">
+          <div class="tp-label">Sales Fulfilment Pipeline</div>
+          <div class="flow">
+            <div class="fs hi">Sales Order Created</div><div class="fa">›</div>
+            <div class="fs">Stock Reserved</div><div class="fa">›</div>
+            <div class="fs">Shipment Raised</div><div class="fa">›</div>
+            <div class="fs hi">Picklist Auto-Generated</div><div class="fa">›</div>
+            <div class="fs">Warehouse Picks</div><div class="fa">›</div>
+            <div class="fs hi2">Dispatched to Customer</div>
+          </div>
+        </div>
+        <div class="tp-green">
+          <div class="tp-label">Inbound / Purchase Pipeline</div>
+          <div class="flow">
+            <div class="fs hi">Requisition Raised</div><div class="fa">›</div>
+            <div class="fs">Approved — PO Created</div><div class="fa">›</div>
+            <div class="fs">Goods Received</div><div class="fa">›</div>
+            <div class="fs hi">Putaway Task Auto-Created</div><div class="fa">›</div>
+            <div class="fs">Stock Binned in WMS</div><div class="fa">›</div>
+            <div class="fs hi2">Inventory Updated Live</div>
+          </div>
+        </div>
+        <div class="tp-amber">
+          <div class="tp-label">Returns Pipeline</div>
+          <div class="flow">
+            <div class="fs hi">Return Request (RMA)</div><div class="fa">›</div>
+            <div class="fs">Approved by Team</div><div class="fa">›</div>
+            <div class="fs">Goods Inspected</div><div class="fa">›</div>
+            <div class="fs hi">Disposition Decision</div><div class="fa">›</div>
+            <div class="fs">Restock / Write-off</div><div class="fa">›</div>
+            <div class="fs hi2">Inventory Adjusted</div>
+          </div>
+        </div>
+        <div class="callout">
+          <p>Every pipeline step is transactional — if any step fails, the entire workflow rolls back atomically. No partial orders, no phantom inventory, no silent failures.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- ════════════════════════════════════ 6. INVENTORY ENGINE -->
+    <div class="slide" data-title="Inventory Engine">
+      <div class="label">Inventory Core</div>
+      <h2>Inventory you can trust — always accurate</h2>
+      <div class="dv"></div>
+      <div class="g2" style="flex:1; gap:24px;">
+        <div style="display:flex; flex-direction:column; gap:12px;">
+          <div class="card-blue" style="border-radius:var(--r-card); padding:20px;">
+            <div class="ib ib-white"><svg fill="none" stroke="#fff" stroke-width="2" viewBox="0 0 24 24"><path d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/></svg></div>
+            <h3>Ledger-First Architecture</h3>
+            <p>Every stock change is recorded as an immutable movement entry. Current stock is <em>calculated</em> from the ledger — no silent overrides, no data loss, full audit forever.</p>
+          </div>
+          <div class="card-green" style="border-radius:var(--r-card); padding:20px;">
+            <div class="ib ib-white"><svg fill="none" stroke="#fff" stroke-width="2" viewBox="0 0 24 24"><path d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z"/></svg></div>
+            <h3>Lot &amp; Expiry Tracking</h3>
+            <p>Track goods by batch and expiry date. FIFO cost layers ensure accurate COGS — critical for food, pharma, and regulated industries.</p>
+          </div>
+          <div class="card-amber" style="border-radius:var(--r-card); padding:20px;">
+            <div class="ib ib-white"><svg fill="none" stroke="#fff" stroke-width="2" viewBox="0 0 24 24"><path d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/><path d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/></svg></div>
+            <h3>Container &amp; Bin Traceability</h3>
+            <p>Every item located at bin level. Trace any SKU to its exact physical position across all warehouses in real time.</p>
+          </div>
+        </div>
+        <div>
+          <div class="tp-blue" style="margin-bottom:14px;">
+            <div class="tp-label">Movement Types — Inventory Ledger</div>
+            <table>
+              <thead><tr><th style="background:transparent;">Type</th><th style="background:transparent;">Trigger</th><th style="background:transparent;">Effect</th></tr></thead>
+              <tbody>
+                <tr><td><span class="badge b-green">GOODS_IN</span></td><td>Purchase Receipt</td><td>Stock +</td></tr>
+                <tr><td><span class="badge b-blue">TRANSFER_OUT</span></td><td>Warehouse Transfer</td><td>Source −</td></tr>
+                <tr><td><span class="badge b-blue">TRANSFER_IN</span></td><td>Warehouse Transfer</td><td>Dest +</td></tr>
+                <tr><td><span class="badge b-red">SALES_ALLOCATED</span></td><td>Shipment Dispatch</td><td>Stock −</td></tr>
+                <tr><td><span class="badge b-green">RETURN_IN</span></td><td>Sales Return Restock</td><td>Stock +</td></tr>
+                <tr><td><span class="badge b-red">WRITE_OFF</span></td><td>Return Damaged</td><td>Stock −</td></tr>
+                <tr><td><span class="badge b-amber">COUNT_ADJUST</span></td><td>Cycle Count Reconcile</td><td>± Variance</td></tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="callout">
+            <p>Cycle counting auto-reconciles physical vs system stock — the self-healing mechanism that keeps data accurate without manual intervention.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ════════════════════════════════════ 7. WAREHOUSE WMS -->
+    <div class="slide" data-title="Warehouse Operations">
+      <div class="label">WMS — Warehouse Management</div>
+      <h2>Your warehouse, running on autopilot</h2>
+      <div class="dv"></div>
+      <div class="g2" style="flex:1; gap:24px;">
+        <div>
+          <ul class="rows" style="margin-bottom:16px;">
+            <li><div><strong style="color:var(--text);">Multi-Warehouse Support</strong> — manage unlimited warehouses per tenant, each with its own zone and bin structure</div></li>
+            <li><div><strong style="color:var(--text);">Digital Picklists</strong> — auto-generated from sales shipments, assigned to staff, tracked through PENDING → IN_PROGRESS → COMPLETED</div></li>
+            <li><div><strong style="color:var(--text);">Putaway Tasks</strong> — inbound receipts instantly trigger directed putaway instructions for warehouse staff</div></li>
+            <li><div><strong style="color:var(--text);">Cycle Count Plans</strong> — schedule physical counts by zone or SKU, system auto-reconciles on submit</div></li>
+            <li><div><strong style="color:var(--text);">Inter-Warehouse Transfers</strong> — move stock with full approval flow and dual movement entries in the ledger</div></li>
+          </ul>
+          <div class="callout">
+            <p>WMS tasks are created automatically via event triggers — no manual intervention. When a shipment is allocated, a picklist appears in the warehouse app instantly.</p>
+          </div>
+        </div>
+        <div>
+          <div style="font-size:10px; font-weight:700; text-transform:uppercase; letter-spacing:1.5px; color:var(--text-m); margin-bottom:12px;">Warehouse Structure</div>
+          <div style="border:1px solid var(--border); border-radius:var(--r-card); padding:20px; background:var(--surface-r); box-shadow:var(--sh-base);">
+            <div style="font-family:'Space Grotesk',sans-serif; font-size:13px; font-weight:700; color:#fff; background:var(--accent); padding:9px 14px; border-radius:9px; margin-bottom:12px;">Warehouse — Central DC</div>
+            <div style="margin-left:16px;">
+              <div style="font-size:13px; font-weight:600; color:var(--text); background:var(--info-bg); border:1px solid var(--info-b); padding:8px 12px; border-radius:8px; margin-bottom:8px;">Zone A — Dry Goods Storage</div>
+              <div style="margin-left:16px; display:flex; gap:6px; flex-wrap:wrap; margin-bottom:12px;">
+                <span class="badge b-gray">Bin A-01</span><span class="badge b-gray">Bin A-02</span><span class="badge b-gray">Bin A-03</span><span class="badge b-gray">Bin A-04</span>
+              </div>
+              <div style="font-size:13px; font-weight:600; color:var(--text); background:var(--success-bg); border:1px solid var(--success-b); padding:8px 12px; border-radius:8px; margin-bottom:8px;">Zone B — Cold Storage</div>
+              <div style="margin-left:16px; display:flex; gap:6px; flex-wrap:wrap; margin-bottom:12px;">
+                <span class="badge b-green">Bin B-01</span><span class="badge b-green">Bin B-02</span><span class="badge b-green">Bin B-03</span>
+              </div>
+              <div style="font-size:13px; font-weight:600; color:var(--text); background:var(--warning-bg); border:1px solid var(--warning-b); padding:8px 12px; border-radius:8px; margin-bottom:8px;">Zone C — Returns Staging</div>
+              <div style="margin-left:16px; display:flex; gap:6px; flex-wrap:wrap;">
+                <span class="badge b-amber">Bin C-01</span><span class="badge b-amber">Bin C-02</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ════════════════════════════════════ 8. PROCUREMENT -->
+    <div class="slide" data-title="Procurement & Purchase">
+      <div class="label">Buying Side</div>
+      <h2>From requisition to stock — in one flow</h2>
+      <div class="dv"></div>
+      <div class="g2" style="flex:1; gap:24px;">
+        <div>
+          <div class="tp-blue" style="margin-bottom:0;">
+            <div class="tp-label">Procurement Workflow</div>
+            <div style="display:flex; flex-direction:column; gap:6px; margin-top:4px;">
+              <div class="fs hi" style="text-align:left; padding:11px 14px;">Staff raises a Purchase Requisition</div>
+              <div style="text-align:center; color:var(--accent); font-weight:700; font-size:18px;">↓</div>
+              <div class="fs" style="text-align:left; padding:11px 14px;">Manager reviews and Approves or Rejects</div>
+              <div style="text-align:center; color:var(--accent); font-weight:700; font-size:18px;">↓</div>
+              <div class="fs" style="text-align:left; padding:11px 14px;">Approved requisition converts to Purchase Order</div>
+              <div style="text-align:center; color:var(--accent); font-weight:700; font-size:18px;">↓</div>
+              <div class="fs" style="text-align:left; padding:11px 14px;">PO confirmed with Supplier — delivery tracked</div>
+              <div style="text-align:center; color:var(--accent); font-weight:700; font-size:18px;">↓</div>
+              <div class="fs" style="text-align:left; padding:11px 14px;">Goods Received — Receipt created, stock updated</div>
+              <div style="text-align:center; color:var(--success); font-weight:700; font-size:18px;">↓</div>
+              <div class="fs hi2" style="text-align:left; padding:11px 14px;">WMS Putaway Task auto-generated instantly</div>
+            </div>
+          </div>
+        </div>
+        <div style="display:flex; flex-direction:column; gap:12px;">
+          <div class="card-blue" style="border-radius:var(--r-card); padding:20px;">
+            <div class="ib ib-white"><svg fill="none" stroke="#fff" stroke-width="2" viewBox="0 0 24 24"><path d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z"/></svg></div>
+            <h3>Supplier Management</h3>
+            <p>Centralised supplier directory — contact info, tax IDs, payment terms, and delivery lead times. All tenant-scoped with full CRUD.</p>
+          </div>
+          <div class="card-amber" style="border-radius:var(--r-card); padding:20px;">
+            <div class="ib ib-white"><svg fill="none" stroke="#fff" stroke-width="2" viewBox="0 0 24 24"><path d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg></div>
+            <h3>Purchase Orders</h3>
+            <p>Multi-line POs confirmed with suppliers, tracked through delivery. Inventory updated automatically on receipt with FIFO cost layer creation.</p>
+          </div>
+          <div class="card-green" style="border-radius:var(--r-card); padding:20px;">
+            <div class="ib ib-white"><svg fill="none" stroke="#fff" stroke-width="2" viewBox="0 0 24 24"><path d="M3 10h10a8 8 0 018 8v2M3 10l6 6m-6-6l6-6"/></svg></div>
+            <h3>Purchase Returns</h3>
+            <p>Return defective or excess goods to the supplier. System deducts inventory, generates a debit note, and maintains the full return audit trail.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ════════════════════════════════════ 9. SALES -->
+    <div class="slide" data-title="Sales & Fulfilment">
+      <div class="label">Selling Side</div>
+      <h2>From order to happy customer — in one platform</h2>
+      <div class="dv"></div>
+      <div class="g2" style="flex:1; gap:24px;">
+        <div style="display:flex; flex-direction:column; gap:12px;">
+          <div class="card-green" style="border-radius:var(--r-card); padding:20px;">
+            <div class="ib ib-white"><svg fill="none" stroke="#fff" stroke-width="2" viewBox="0 0 24 24"><path d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z"/></svg></div>
+            <h3>Customer Management</h3>
+            <p>Contact details, credit limits, payment terms, and full order history — all tenant-scoped and linked to every order and return.</p>
+          </div>
+          <div class="card-blue" style="border-radius:var(--r-card); padding:20px;">
+            <div class="ib ib-white"><svg fill="none" stroke="#fff" stroke-width="2" viewBox="0 0 24 24"><path d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"/></svg></div>
+            <h3>Sales Orders</h3>
+            <p>Create orders with line items, pricing, and discounts. States flow atomically from DRAFT through CONFIRMED, ALLOCATED, SHIPPED, to DELIVERED.</p>
+          </div>
+          <div class="card-stripe-amber" style="padding:20px;">
+            <div class="ib ib-amber"><svg fill="none" stroke="var(--warning)" stroke-width="2" viewBox="0 0 24 24"><path d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/></svg></div>
+            <h3>Stock Reservations</h3>
+            <p>Reserve specific stock against an order before physical dispatch — prevents overselling even under high concurrent order volume using row-level locking.</p>
+          </div>
+          <div class="card-stripe-green" style="padding:20px;">
+            <div class="ib ib-green"><svg fill="none" stroke="var(--success)" stroke-width="2" viewBox="0 0 24 24"><path d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4"/></svg></div>
+            <h3>Shipment Tracking</h3>
+            <p>Assign carriers, track dispatch status, and automatically update the inventory ledger when goods leave the warehouse.</p>
+          </div>
+        </div>
+        <div>
+          <div class="tp-green" style="margin-bottom:14px;">
+            <div class="tp-label">Sales Order Lifecycle</div>
+            <table>
+              <thead><tr><th style="background:transparent;">Status</th><th style="background:transparent;">Meaning</th><th style="background:transparent;">Next Step</th></tr></thead>
+              <tbody>
+                <tr><td><span class="badge b-gray">DRAFT</span></td><td>Order being prepared</td><td>Confirm order</td></tr>
+                <tr><td><span class="badge b-blue">CONFIRMED</span></td><td>Customer committed</td><td>Reserve stock</td></tr>
+                <tr><td><span class="badge b-amber">ALLOCATED</span></td><td>Stock reserved</td><td>Create shipment</td></tr>
+                <tr><td><span class="badge b-blue">PICKED</span></td><td>WMS picklist complete</td><td>Dispatch carrier</td></tr>
+                <tr><td><span class="badge b-amber">SHIPPED</span></td><td>In transit</td><td>Confirm delivery</td></tr>
+                <tr><td><span class="badge b-green">DELIVERED</span></td><td>Customer received</td><td>Close order</td></tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="callout">
+            <p>Real-time stock reservation prevents overselling at scale — even under high concurrent order volume, row-level locking guarantees atomicity.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ════════════════════════════════════ 10. RETURNS -->
+    <div class="slide" data-title="Returns Management">
+      <div class="label">Returns — RMA &amp; Vendor Returns</div>
+      <h2>Returns managed, not just accepted</h2>
+      <div class="dv"></div>
+      <div class="g2" style="flex:1; gap:24px;">
+        <div style="display:flex; flex-direction:column; gap:12px;">
+          <div class="card-blue" style="border-radius:var(--r-card); padding:22px; flex:1;">
+            <div class="ib ib-white"><svg fill="none" stroke="#fff" stroke-width="2" viewBox="0 0 24 24"><path d="M3 10h10a8 8 0 018 8v2M3 10l6 6m-6-6l6-6"/></svg></div>
+            <h3>Customer Returns (RMA)</h3>
+            <p style="margin-bottom:12px;">Customer return flow linked directly to the original shipment. Each line item is inspected individually and given a disposition decision before any inventory is touched.</p>
+            <div style="display:flex; gap:6px; flex-wrap:wrap;">
+              <span class="badge b-white">Linked to shipment</span>
+              <span class="badge b-white">Per-item inspection</span>
+              <span class="badge b-white">Full audit trail</span>
+            </div>
+          </div>
+          <div class="card-amber" style="border-radius:var(--r-card); padding:22px; flex:1;">
+            <div class="ib ib-white"><svg fill="none" stroke="#fff" stroke-width="2" viewBox="0 0 24 24"><path d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4"/></svg></div>
+            <h3>Vendor Returns</h3>
+            <p style="margin-bottom:12px;">Return excess or defective goods to the supplier against the original purchase receipt. Inventory adjusts automatically and a debit note is created for accounting.</p>
+            <div style="display:flex; gap:6px; flex-wrap:wrap;">
+              <span class="badge b-white">Linked to receipt</span>
+              <span class="badge b-white">Auto debit note</span>
+              <span class="badge b-white">Stock deduction</span>
+            </div>
+          </div>
+        </div>
+        <div style="display:flex; flex-direction:column; gap:12px;">
+          <div class="tp-amber" style="margin-bottom:0; flex-shrink:0;">
+            <div class="tp-label">Disposition Options</div>
+            <table>
+              <thead><tr><th style="background:transparent;">Decision</th><th style="background:transparent;">Inventory Effect</th><th style="background:transparent;">Use Case</th></tr></thead>
+              <tbody>
+                <tr><td><span class="badge b-green">Restock</span></td><td>+RETURN_IN movement</td><td>Good condition, resellable</td></tr>
+                <tr><td><span class="badge b-red">Write-Off</span></td><td>+WRITE_OFF movement</td><td>Damaged, unsellable</td></tr>
+                <tr><td><span class="badge b-amber">Return to Vendor</span></td><td>−RETURN_OUT movement</td><td>Defective, under warranty</td></tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="tp-blue">
+            <div class="tp-label">Return Lifecycle</div>
+            <div class="flow" style="margin-top:4px;">
+              <div class="fs hi">Request</div><div class="fa">›</div>
+              <div class="fs">Approved</div><div class="fa">›</div>
+              <div class="fs">Received</div><div class="fa">›</div>
+              <div class="fs hi">Inspected</div><div class="fa">›</div>
+              <div class="fs hi2">Restocked</div>
+            </div>
+          </div>
+          <div style="background:var(--accent); border-radius:12px; padding:16px 18px;">
+            <p style="color:#fff; font-size:13px; font-weight:600; line-height:1.5;">The entire return flow — from approval to inventory adjustment — executes as a single atomic transaction. No phantom stock, no partial states, ever.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ════════════════════════════════════ 11. REPLENISHMENT -->
+    <div class="slide" data-title="Smart Replenishment">
+      <div class="label">Replenishment &amp; Demand Intelligence</div>
+      <h2>Never run out. Never overstock.</h2>
+      <div class="dv"></div>
+      <div class="g2" style="flex:1; gap:24px;">
+        <div style="display:flex; flex-direction:column; gap:12px;">
+          <div class="card-green" style="border-radius:var(--r-card); padding:20px;">
+            <div class="ib ib-white"><svg fill="none" stroke="#fff" stroke-width="2" viewBox="0 0 24 24"><path d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"/></svg></div>
+            <h3>Demand Snapshots</h3>
+            <p>Periodic snapshots capture sales velocity per SKU over a defined period. The platform calculates average daily usage and variance to drive data-backed reorder points.</p>
+          </div>
+          <div class="card-blue" style="border-radius:var(--r-card); padding:20px;">
+            <div class="ib ib-white"><svg fill="none" stroke="#fff" stroke-width="2" viewBox="0 0 24 24"><path d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"/></svg></div>
+            <h3>Low-Stock Alerts</h3>
+            <p>Real-time alerts fire when stock falls below the calculated reorder point — surfaced on the dashboard before a stockout happens, with enough lead time to act.</p>
+          </div>
+          <div class="card-amber" style="border-radius:var(--r-card); padding:20px;">
+            <div class="ib ib-white"><svg fill="none" stroke="#fff" stroke-width="2" viewBox="0 0 24 24"><path d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg></div>
+            <h3>Lot Expiry Alerts</h3>
+            <p>Proactively flag lots approaching expiry — critical for food, pharma, and perishables. Prevents costly write-offs from goods that expire on the shelf undetected.</p>
+          </div>
+        </div>
+        <div>
+          <div class="tp-green">
+            <div class="tp-label">Replenishment Intelligence Flow</div>
+            <div style="display:flex; flex-direction:column; gap:8px; margin-top:6px;">
+              <div class="fs" style="text-align:left; padding:11px 14px;">Sales data captured in periodic demand snapshot</div>
+              <div style="text-align:center; color:var(--success); font-weight:700; font-size:18px;">↓</div>
+              <div class="fs" style="text-align:left; padding:11px 14px;">Avg daily usage + supplier lead time = Reorder Point</div>
+              <div style="text-align:center; color:var(--success); font-weight:700; font-size:18px;">↓</div>
+              <div class="fs hi" style="text-align:left; padding:11px 14px;">Alert fires when stock crosses the reorder point</div>
+              <div style="text-align:center; color:var(--success); font-weight:700; font-size:18px;">↓</div>
+              <div class="fs" style="text-align:left; padding:11px 14px;">Procurement team raises a Requisition</div>
+              <div style="text-align:center; color:var(--success); font-weight:700; font-size:18px;">↓</div>
+              <div class="fs hi2" style="text-align:left; padding:11px 14px;">Stock replenished before the shelf empties</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ════════════════════════════════════ 12. REPORTING -->
+    <div class="slide" data-title="Analytics & Reporting">
+      <div class="label">Insights</div>
+      <h2>Decisions made from data, not gut feel</h2>
+      <div class="dv"></div>
+      <div class="g2" style="flex:1; gap:24px;">
+        <div>
+          <div class="tp-blue">
+            <div class="tp-label">Built-In Reports</div>
+            <table>
+              <thead><tr><th style="background:transparent;">Report</th><th style="background:transparent;">Key Insight</th></tr></thead>
+              <tbody>
+                <tr><td><strong>Inventory Valuation</strong></td><td>Total stock value per warehouse, FIFO-costed</td></tr>
+                <tr><td><strong>Sales Performance</strong></td><td>Revenue, units sold, top SKUs by period</td></tr>
+                <tr><td><strong>Purchase Spend</strong></td><td>Spend by supplier, category, and time period</td></tr>
+                <tr><td><strong>Stock Turnover</strong></td><td>Days inventory outstanding per SKU</td></tr>
+                <tr><td><strong>Ageing Report</strong></td><td>Slow-moving stock flagged by age bracket</td></tr>
+                <tr><td><strong>Return Rate Analysis</strong></td><td>Return % by customer, SKU, and reason code</td></tr>
+                <tr><td><strong>User Activity Log</strong></td><td>Full audit of every action by every user</td></tr>
+                <tr><td><strong>Lot Expiry</strong></td><td>Upcoming expiries grouped by time horizon</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+        <div style="display:flex; flex-direction:column; gap:12px;">
+          <div class="card-blue" style="border-radius:var(--r-card); padding:20px;">
+            <div class="ib ib-white"><svg fill="none" stroke="#fff" stroke-width="2" viewBox="0 0 24 24"><path d="M9 17v-2m3 2v-4m3 4v-6m2 10H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg></div>
+            <h3>Live Dashboard on Login</h3>
+            <p>Key metrics surfaced immediately — stock alerts, pending orders, low inventory, and revenue trend. No report generation, no waiting.</p>
+          </div>
+          <div class="card-green" style="border-radius:var(--r-card); padding:20px;">
+            <div class="ib ib-white"><svg fill="none" stroke="#fff" stroke-width="2" viewBox="0 0 24 24"><path d="M13 10V3L4 14h7v7l9-11h-7z"/></svg></div>
+            <h3>No Data Exports Required</h3>
+            <p>All analytics are built into the platform. Teams make decisions in real time — not after a 2-day reporting cycle that produces stale insight.</p>
+          </div>
+          <div class="card-amber" style="border-radius:var(--r-card); padding:20px;">
+            <div class="ib ib-white"><svg fill="none" stroke="#fff" stroke-width="2" viewBox="0 0 24 24"><path d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg></div>
+            <h3>Finance Integration</h3>
+            <p>COGS calculated from FIFO cost layers. AP and AR balances linked to POs and sales orders — ready for accounting system sync.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ════════════════════════════════════ 13. SECURITY -->
+    <div class="slide" data-title="Security & Multi-Tenancy">
+      <div class="label">Trust &amp; Compliance</div>
+      <h2>Enterprise-grade security, built in from day one</h2>
+      <div class="dv"></div>
+      <div class="g3" style="flex:1; align-items:start;">
+        <div class="card-blue" style="border-radius:var(--r-card); padding:20px;">
+          <div class="ib ib-white"><svg fill="none" stroke="#fff" stroke-width="2" viewBox="0 0 24 24"><path d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"/></svg></div>
+          <h3>Strict Tenant Isolation</h3>
+          <p>Every query is scoped to <code style="background:rgba(255,255,255,.2); padding:1px 5px; border-radius:4px; font-size:12px;">tenant_id</code> at the repository layer — architecturally impossible to read another tenant's data.</p>
+        </div>
+        <div class="card-green" style="border-radius:var(--r-card); padding:20px;">
+          <div class="ib ib-white"><svg fill="none" stroke="#fff" stroke-width="2" viewBox="0 0 24 24"><path d="M15 7a2 2 0 012 2m4 0a6 6 0 01-7.743 5.743L11 17H9v2H7v2H4a1 1 0 01-1-1v-2.586a1 1 0 01.293-.707l5.964-5.964A6 6 0 1121 9z"/></svg></div>
+          <h3>JWT + Refresh Tokens</h3>
+          <p>Short-lived access tokens with long-lived refresh tokens stored in the database. Sessions can be revoked remotely and rotation is enforced on every refresh.</p>
+        </div>
+        <div class="card-amber" style="border-radius:var(--r-card); padding:20px;">
+          <div class="ib ib-white"><svg fill="none" stroke="#fff" stroke-width="2" viewBox="0 0 24 24"><path d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/></svg></div>
+          <h3>Role-Based Access Control</h3>
+          <p>Granular RBAC with permissions checked on every protected route at the middleware layer — not just at the controller. Roles are tenant-scoped.</p>
+        </div>
+        <div class="card-stripe-blue" style="padding:20px;">
+          <div class="ib ib-blue"><svg fill="none" stroke="var(--accent)" stroke-width="2" viewBox="0 0 24 24"><path d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg></div>
+          <h3>User Invite Flow</h3>
+          <p>Invite staff by email with signed tokens. No password sharing, no manual account creation — users self-onboard securely with enforced email verification.</p>
+        </div>
+        <div class="card-stripe-green" style="padding:20px;">
+          <div class="ib ib-green"><svg fill="none" stroke="var(--success)" stroke-width="2" viewBox="0 0 24 24"><path d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01"/></svg></div>
+          <h3>Full Audit Trail</h3>
+          <p>Every meaningful action is logged to <code style="font-size:12px; background:var(--success-bg); padding:1px 5px; border-radius:4px;">user_activities</code> with timestamp, user, and tenant context. Compliance-ready out of the box.</p>
+        </div>
+        <div class="card-stripe-amber" style="padding:20px;">
+          <div class="ib ib-amber"><svg fill="none" stroke="var(--warning)" stroke-width="2" viewBox="0 0 24 24"><path d="M4 7v10c0 2.21 3.582 4 8 4s8-1.79 8-4V7M4 7c0 2.21 3.582 4 8 4s8-1.79 8-4M4 7c0-2.21 3.582-4 8-4s8 1.79 8 4"/></svg></div>
+          <h3>Parameterized Queries Only</h3>
+          <p>Zero raw SQL string interpolation across the entire codebase. SQL injection is structurally prevented — no guard clauses needed because the attack surface does not exist.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- ════════════════════════════════════ 14. TECHNOLOGY -->
+    <div class="slide" data-title="Technology">
+      <div class="label">Built to Scale</div>
+      <h2>Modern, proven technology at every layer</h2>
+      <div class="dv"></div>
+      <div class="g2" style="flex:1; gap:24px;">
+        <div style="display:flex; flex-direction:column; gap:12px;">
+          <div class="tp-blue">
+            <div class="tp-label">Backend Stack</div>
+            <table>
+              <tbody>
+                <tr><td style="font-weight:700; color:var(--text); width:130px;">Runtime</td><td>Node.js + Express</td></tr>
+                <tr><td style="font-weight:700; color:var(--text);">Language</td><td>TypeScript — strict mode enforced</td></tr>
+                <tr><td style="font-weight:700; color:var(--text);">Database</td><td>MySQL 8 — UUID primary keys, parameterized queries</td></tr>
+                <tr><td style="font-weight:700; color:var(--text);">Validation</td><td>Zod DTO schemas at all API boundaries</td></tr>
+                <tr><td style="font-weight:700; color:var(--text);">Auth</td><td>JWT + bcrypt + refresh token rotation</td></tr>
+                <tr><td style="font-weight:700; color:var(--text);">Transactions</td><td>Unit of Work + Transaction Manager pattern</td></tr>
+                <tr><td style="font-weight:700; color:var(--text);">Events</td><td>Internal EventBus — decoupled domain events</td></tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="tp-green">
+            <div class="tp-label">Frontend Stack</div>
+            <table>
+              <tbody>
+                <tr><td style="font-weight:700; color:var(--text); width:130px;">Framework</td><td>React 18 + Vite</td></tr>
+                <tr><td style="font-weight:700; color:var(--text);">Routing</td><td>React Router v6</td></tr>
+                <tr><td style="font-weight:700; color:var(--text);">Styling</td><td>Tailwind CSS</td></tr>
+                <tr><td style="font-weight:700; color:var(--text);">HTTP</td><td>Axios with shared interceptors and auth refresh</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+        <div style="display:flex; flex-direction:column; gap:12px;">
+          <div class="tp-amber">
+            <div class="tp-label">Architecture Principles</div>
+            <ul class="rows">
+              <li>Clean layered architecture: Route → Controller → Service → Repository → DB</li>
+              <li>Controllers are thin — only HTTP concerns and input validation</li>
+              <li>Services own all business logic and transaction boundaries</li>
+              <li>Repositories are pure persistence — no business rules</li>
+              <li>Multi-step writes always wrapped in Unit of Work — atomic or fully rolled back</li>
+              <li>EventBus decouples WMS task creation from sales and purchase flows</li>
+              <li>Composite indexes on all tenant-scoped queries for isolated query plans</li>
+              <li>Row-level locking prevents concurrent stock corruption under load</li>
+            </ul>
+          </div>
+          <div class="card-blue" style="border-radius:var(--r-card); padding:18px 20px;">
+            <h3>Why this stack</h3>
+            <p>Every choice optimises for correctness, tenant safety, and long-term maintainability — not just time to first feature. The architecture is designed to scale to thousands of tenants without code changes.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ════════════════════════════════════ 15. CLOSE -->
+    <div class="slide" data-title="Why LogistiQ">
+      <div style="display:flex; height:100%; gap:0;">
+        <div class="panel-dark" style="width:48%; margin-right:36px; flex-shrink:0; display:flex; flex-direction:column; justify-content:space-between;">
+          <div>
+            <div style="font-size:10px; font-weight:700; letter-spacing:2px; text-transform:uppercase; color:#64748b; margin-bottom:16px;">The Opportunity</div>
+            <div style="font-family:'Space Grotesk',sans-serif; font-size:34px; font-weight:800; color:#fff; line-height:1.15; margin-bottom:18px; letter-spacing:-.5px;">Built for the teams ERPs forgot.</div>
+            <p style="font-size:14px; color:#94a3b8; line-height:1.65;">Mid-market distributors, 3PLs, and manufacturers need enterprise-grade operations software — without the 18-month SAP implementation and seven-figure licence fee. LogistiQ is production-ready, multi-tenant, and deployable today.</p>
+          </div>
+          <div style="border-top:1px solid #1e293b; padding-top:20px; margin-top:20px;">
+            <div style="font-size:10px; font-weight:700; letter-spacing:2px; text-transform:uppercase; color:#64748b; margin-bottom:12px;">Ready Today</div>
+            <ul style="list-style:none; display:flex; flex-direction:column; gap:8px;">
+              <li style="font-size:13px; color:#cbd5e1; display:flex; gap:8px;"><span style="color:#10b981; font-weight:700;">✓</span>All 13 modules live and functional</li>
+              <li style="font-size:13px; color:#cbd5e1; display:flex; gap:8px;"><span style="color:#10b981; font-weight:700;">✓</span>Multi-tenant architecture in production</li>
+              <li style="font-size:13px; color:#cbd5e1; display:flex; gap:8px;"><span style="color:#10b981; font-weight:700;">✓</span>Full audit trail and RBAC enforced</li>
+              <li style="font-size:13px; color:#cbd5e1; display:flex; gap:8px;"><span style="color:#10b981; font-weight:700;">✓</span>New tenant onboarded in minutes</li>
+            </ul>
+          </div>
+        </div>
+        <div style="flex:1; display:flex; flex-direction:column; justify-content:center; gap:14px;">
+          <div style="font-size:10px; font-weight:700; text-transform:uppercase; letter-spacing:1.8px; color:var(--text-m);">Why LogistiQ</div>
+          <div class="card-blue" style="border-radius:var(--r-card); padding:20px 22px;">
+            <div class="ib ib-white"><svg fill="none" stroke="#fff" stroke-width="2" viewBox="0 0 24 24"><path d="M13 10V3L4 14h7v7l9-11h-7z"/></svg></div>
+            <h3>Fast Onboarding</h3>
+            <p>New tenant registered, configured, and operational in minutes — not months. No professional services engagement required.</p>
+          </div>
+          <div class="card-green" style="border-radius:var(--r-card); padding:20px 22px;">
+            <div class="ib ib-white"><svg fill="none" stroke="#fff" stroke-width="2" viewBox="0 0 24 24"><path d="M4 6h16M4 12h8m-8 6h16"/></svg></div>
+            <h3>End-to-End Coverage</h3>
+            <p>From purchase requisition to customer delivery — no stitching together multiple tools, no integration maintenance, no data synchronisation lag.</p>
+          </div>
+          <div class="card-amber" style="border-radius:var(--r-card); padding:20px 22px;">
+            <div class="ib ib-white"><svg fill="none" stroke="#fff" stroke-width="2" viewBox="0 0 24 24"><path d="M7 12l3-3 3 3 4-4M8 21l4-4 4 4M3 4h18M4 4h16v12a1 1 0 01-1 1H5a1 1 0 01-1-1V4z"/></svg></div>
+            <h3>Scales With You</h3>
+            <p>Architecture designed for thousands of tenants — composite tenant-scoped indexes, row-level locking, and event-driven decoupling handle any load.</p>
+          </div>
+          <div class="card-stripe-blue" style="padding:20px 22px;">
+            <div class="ib ib-blue"><svg fill="none" stroke="var(--accent)" stroke-width="2" viewBox="0 0 24 24"><path d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/></svg></div>
+            <h3>Compliance Ready</h3>
+            <p>Full audit trail, RBAC, and complete tenant isolation — built specifically for regulated industries where data integrity is non-negotiable.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div><!-- /sa -->
+
+  <!-- Bottom dots -->
+  <div class="dotbar" id="dots"></div>
+
+</div><!-- /vp -->
+
+<div class="kb"><kbd>←</kbd> <kbd>→</kbd></div>
+
+<script>
+  const slides = document.querySelectorAll('.slide');
+  const counter = document.getElementById('counter');
+  const navTitle = document.getElementById('navTitle');
+  const dotsEl = document.getElementById('dots');
+  let cur = 0;
+
+  slides.forEach((_, i) => {
+    const d = document.createElement('div');
+    d.className = 'dot' + (i === 0 ? ' active' : '');
+    d.title = slides[i].dataset.title || '';
+    d.onclick = () => goTo(i);
+    dotsEl.appendChild(d);
+  });
+
+  function goTo(n) {
+    slides[cur].classList.remove('active');
+    dotsEl.children[cur].classList.remove('active');
+    cur = (n + slides.length) % slides.length;
+    slides[cur].classList.add('active');
+    dotsEl.children[cur].classList.add('active');
+    counter.textContent = `${cur + 1} / ${slides.length}`;
+    navTitle.textContent = slides[cur].dataset.title || '';
+  }
+
+  function next() { goTo(cur + 1); }
+  function prev() { goTo(cur - 1); }
+
+  document.addEventListener('keydown', e => {
+    if (e.key === 'ArrowRight' || e.key === 'ArrowDown') next();
+    if (e.key === 'ArrowLeft'  || e.key === 'ArrowUp')   prev();
+  });
+
+  navTitle.textContent = slides[0].dataset.title || '';
+</script>
+</body>
+</html>
